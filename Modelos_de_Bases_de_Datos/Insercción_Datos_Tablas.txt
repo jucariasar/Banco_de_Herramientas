@@ -1,0 +1,83 @@
+INSERT INTO regional VALUES
+(5, "Antioquia");
+
+INSERT INTO regional VALUES
+(17, "Caldas");
+
+INSERT INTO regional VALUES
+(68, "Santander");
+
+
+INSERT INTO centro VALUES
+(9203, "Centro para el Desarrollo del Hábitad y la Construcción", 5);
+
+INSERT INTO centro VALUES
+(9204, "Centro de Tecnología de la Manufactura Avanzada", 5);
+
+INSERT INTO centro VALUES
+(9206, "Centro Textil de Gestión Industrial", 5);
+
+INSERT INTO centro VALUES
+(9112, "Centro Atención Sector Agropecuario", 17);
+
+INSERT INTO centro VALUES
+(9219, "Centro de Automatización Industrial", 17);
+
+INSERT INTO centro VALUES
+(9220, "Centro de Industria", 17);
+
+INSERT INTO centro VALUES
+(9309, "Centro Comercio y Servicios", 68);
+
+INSERT INTO centro VALUES
+(9224, "Centro Industrial de Girón", 68);
+
+INSERT INTO centro VALUES
+(9225, "Centro Industrial de Floridablanca", 68);
+
+
+INSERT INTO area VALUES
+("Automatización", 9204);
+
+INSERT INTO area VALUES
+("Automatización", 9219);
+
+INSERT INTO area VALUES
+("Automatización", 9224);
+
+INSERT INTO area VALUES
+("Electricidad", 9204);
+
+INSERT INTO area VALUES
+("Electricidad", 9219);
+
+INSERT INTO area VALUES
+("Electricidad", 9224);
+
+INSERT INTO area VALUES
+("Manufactura", 9204);
+
+
+INSERT INTO persona VALUES
+(98553377, "Héctor Alonso", "López Valencia", 3146416371, 3136158545, "helopez@sena.edu.co", "Automatización", 9204, "EMPLEADO");
+
+INSERT INTO persona VALUES
+(1128387562, "Juan Camilo", "Arias Arias", 3017339021,	"5824247", "miloarias@gmail.com", "Automatización", 9204, "EMPLEADO");
+
+INSERT INTO persona VALUES
+(70550772, "Efren Eliecer", "Calle Montoya", 3004164637, NULL, "ecallenator@gmail.com", "Automatización", 9204, "EMPLEADO");
+
+INSERT INTO persona VALUES
+(99010212959, "Yeimi Daniela", "Alvarez Giraldo", 3117958321, NULL, "yeimmy4585@gmail.com", "Automatización", 9204, "APRENDIZ");
+
+INSERT INTO persona VALUES
+(70764532, "John Alonso", "Monsalve Jaramillo", 3156737465, NULL, "jmonsalve@sena.edu.co", "Electricidad", 9204, "EMPLEADO");
+
+INSERT INTO persona VALUES
+(71776164, "Carlos Andres", "Gonzalez Botero", 3113746253, 3411483, "remolino77@gmail.com", "Electricidad", 9204, "EMPLEADO");
+
+INSERT INTO persona VALUES
+(1017146760, "Gerson Obed", "Rivas Deossa", 3108979552, NULL, "gorivas@misena.edu.co", "Automatización", 9204, "EMPLEADO");
+
+INSERT INTO persona VALUES
+(71578068, "Carlos Ignacio", "Espinosa Trujillo", "3127069044", NULL, "cespinosat@sena.edu.co", "Automatización", 9204, "EMPLEADO");

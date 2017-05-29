@@ -1,0 +1,35 @@
+CREATE TABLE regional(
+codigo INT PRIMARY KEY,
+nombre_depto VARCHAR(20) UNIQUE NOT NULL
+);
+
+
+CREATE TABLE centro(
+codigo INT PRIMARY KEY,
+nombre VARCHAR(60) NOT NULL,
+codigo_regional INT,
+FOREIGN KEY (codigo_regional) REFERENCES regional(codigo)
+);
+
+CREATE TABLE area(
+nombre VARCHAR(60) NOT NULL,
+codigo_centro INT NOT NULL,
+PRIMARY KEY(nombre, codigo_centro),
+FOREIGN KEY (codigo_centro) REFERENCES centro(codigo)
+);
+
+CREATE TABLE persona(
+carne BIGINT UNSIGNED PRIMARY KEY,
+nombres VARCHAR(60) NOT NULL,
+apellidos VARCHAR(60) NOT NULL,
+telefono_1 VARCHAR(15) NOT NULL,
+telefono_2 VARCHAR(15),
+email VARCHAR(80) NOT NULL,
+nombre_area VARCHAR(60) NOT NULL,
+codigo_centro INT NOT NULL,
+tipo VARCHAR(30) NOT NULL,
+FOREIGN KEY (nombre_area, codigo_centro) REFERENCES area(nombre, codigo_centro)
+);
+
+SELECT *
+FROM regional;
