@@ -17,6 +17,13 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import javax.sql.rowset.JdbcRowSet;
 import conexionBD.ConexionBD;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @WebServlet(name = "Registro", urlPatterns = {"/Registro"})
 public class Registro extends HttpServlet {
@@ -52,41 +59,76 @@ public class Registro extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        System.out.print("Prueba de Conexion");
+ 
+        int codigo = Integer.parseInt(request.getParameter("codigo"));
+        String nombre = request.getParameter("nombre");
+        //String insertarR = "INSERT INTO regional VALUES (5, 'Antioquia')";
         
-       
-        //String valor = request.getParameter("r_regional");
-        int codigo;
-        String nombre;
+        //Inicio de código probado satisfactoriamente
         
-        
-        //if(valor.equals("Insertar Regional"))
-        //{
-            codigo = Integer.parseInt(request.getParameter("codigo"));
-            nombre = request.getParameter("nombre");
+        int resultado = 0;
+        Connection conexion = null;
+        PreparedStatement instruccion = null;  
+        try{
+            Class.forName(ConexionBD.CONTROLADOR);
             
-            String insertarR = "INSERT INTO " + "regional" + " VALUES (" + codigo + ", " + nombre+")";
+            conexion = 
+                    DriverManager.getConnection(ConexionBD.URL_BASEDATOS, 
+                            "root", "5824247");
+            
+            instruccion = conexion.prepareStatement("INSERT INTO regional " + 
+                    "(codigo, nombre_departamento) " +
+                    "VALUES (?, ?)");
+            
+            instruccion.setInt(1, codigo);
+            instruccion.setString(2, nombre);
+            resultado = instruccion.executeUpdate();
+                 
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        finally{
+        RequestDispatcher view = request.getRequestDispatcher("registro_regional.jsp");
+        view.forward(request, response);
             try{
-                Class.forName(ConexionBD.CONTROLADOR);
-                
-                JdbcRowSet rowSet= new JdbcRowSetImpl();
-                rowSet.setUrl(ConexionBD.URL_BASEDATOS);
-                rowSet.setUsername(ConexionBD.NOMBREUSUARIO);
-                rowSet.setPassword(ConexionBD.PASSWORD);
-                rowSet.setCommand(insertarR);
-                rowSet.execute();
-                System.out.print("Dato Insertado Correctamente");
+                instruccion.close();
+                conexion.close();
             }
-            catch(SQLException exceptionSql){
-                
-                exceptionSql.printStackTrace();
-                System.exit(1);
+            catch(Exception ex){
+                ex.printStackTrace();
             }
-            catch(ClassNotFoundException noEncontroClase){
-                noEncontroClase.printStackTrace();
-                System.exit(1);
-            }
-        //           
-    }
 
+        } 
+        // Fin de código probado satisfactoriamente
+        
+        
+        // Inicio de código por depurar y consultar
+        /*
+        try{
+            Class.forName(ConexionBD.CONTROLADOR);
+                
+            JdbcRowSet rowSet= new JdbcRowSetImpl();
+            rowSet.setUrl(ConexionBD.URL_BASEDATOS);
+            rowSet.setUsername(ConexionBD.NOMBREUSUARIO);
+            rowSet.setPassword(ConexionBD.PASSWORD);
+            rowSet.setCommand("INSERT INTO regional VALUES (68, 'Antioquia')");
+            rowSet.execute();
+            RequestDispatcher view = request.getRequestDispatcher("registro_regional.jsp");
+            view.forward(request, response);
+            //System.out.print("Dato Insertado Correctamente");
+        }
+        catch(SQLException exceptionSql){
+                
+            exceptionSql.printStackTrace();
+            System.exit(1);
+        }
+        catch(ClassNotFoundException noEncontroClase){
+            noEncontroClase.printStackTrace();
+            System.exit(1);
+        }*/ 
+        //Fin de código por reparar 
+        
+    }
 }
