@@ -14,18 +14,14 @@
     </head>
 <%@ include file="/header.jsp" %>
 
-<h1>Registro de Centro</h1>
-        <form action="" method="POST">
-		<br><br><br>
-		<b>Código del Centro:</b><input type="number" name="codigo"><br><br>
-		<b>Nombre del Centro:</b><input type="text" name="nombre"><br><br>
-                <b>Seleccione una Regional:</b>
-		<select name="codigo_regional">
-                    <option type="number" value="5">Antioquia</option>
-                    <option type="number" value="17">Caldas</option>
-                    <option type="number" value="68">Santandes</option>
-		</select><br><br>	
-		<input type="submit" value="Insertar">
-	</form>
+<h3>Enlaces</h3>
+
+	<ul>
+		<li><a href="http://localhost:8084/aplicacion/Registro?accion=1">Registrar Regional</a></li>
+		<li><a href="http://localhost:8084/aplicacion/Registro?accion=2">Registrar Centro</a></li>
+		<li><a href="http://localhost:8084/aplicacion/Registro?accion=3">Registrar Area</a></li>
+		<li><a href="http://localhost:8084/aplicacion/Registro?accion=4">Registrar Persona</a></li>
+		<li><a href="http://localhost:8084/aplicacion/Registro?accion=5">Registrar Elemento</a></li>
+	</ul>
 
 <%@ include file="/footer.jsp" %>
