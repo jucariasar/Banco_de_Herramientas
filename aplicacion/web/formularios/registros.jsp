@@ -17,7 +17,7 @@
 <h3>Enlaces</h3>
 
 	<ul>
-		<li><a href="http://localhost:8084/aplicacion/formularios/Registro?accion=1">Registrar Regional</a></li>
+		<li><a href="http://localhost:8084/aplicacion/Registro?accion=1">Registrar Regional</a></li>
 		<li><a href="http://localhost:8084/aplicacion/Registro?accion=2">Registrar Centro</a></li>
 		<li><a href="http://localhost:8084/aplicacion/Registro?accion=3">Registrar Area</a></li>
 		<li><a href="http://localhost:8084/aplicacion/Registro?accion=4">Registrar Persona</a></li>
