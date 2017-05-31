@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package controladores;
 
 import com.sun.rowset.JdbcRowSetImpl;
@@ -37,19 +33,16 @@ public class Registro extends HttpServlet {
         
         switch(opt){
             case 1:
-                view = request.getRequestDispatcher("registro_regional.jsp");
-                System.out.print("Ingreseo a opcion 1");
+                view = request.getRequestDispatcher("formularios/registro_regional.jsp");
                 break;
             case 2:
-                view = request.getRequestDispatcher("registro_centro.jsp");
-                System.out.print("Ingreseo a opcion 2");
+                view = request.getRequestDispatcher("formularios/registro_centro.jsp");
                 break;
             case 3:
-                view = request.getRequestDispatcher("registro_area.jsp");
-                System.out.print("Ingreseo a opcion 1");
+                view = request.getRequestDispatcher("formularios/registro_area.jsp");
                 break;
             default:
-                view = request.getRequestDispatcher("registro_regional.jsp");          
+                view = request.getRequestDispatcher("formularios/registros.jsp");          
         }
         view.forward(request, response);
     }
@@ -90,7 +83,7 @@ public class Registro extends HttpServlet {
             ex.printStackTrace();
         }
         finally{
-        RequestDispatcher view = request.getRequestDispatcher("registro_regional.jsp");
+        RequestDispatcher view = request.getRequestDispatcher("formularios/registro_regional.jsp");
         view.forward(request, response);
             try{
                 instruccion.close();
