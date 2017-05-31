@@ -7,7 +7,7 @@
 		<br><br><br>
 		<b>Código de la Regional:</b><input type="number" name="codigo"><br><br>
 		<b>Nombre del Departamento:</b><input type="text" name="nombre"><br><br>	
-		<input type="submit" value="Insertar Regional">
+		<input type="submit" value="Insertar Regional" name="boton_registro">
 	</form>
 
 <%@ include file="/footer.jsp" %>

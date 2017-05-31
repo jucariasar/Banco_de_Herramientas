@@ -1,4 +1,3 @@
-
 package controladores;
 
 import com.sun.rowset.JdbcRowSetImpl;
@@ -28,10 +27,10 @@ public class Registro extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int opt = Integer.parseInt(request.getParameter("accion"));
-        
-        RequestDispatcher view ;
-        
-        switch(opt){
+
+        RequestDispatcher view;
+
+        switch (opt) {
             case 1:
                 view = request.getRequestDispatcher("formularios/registro_regional.jsp");
                 break;
@@ -42,61 +41,101 @@ public class Registro extends HttpServlet {
                 view = request.getRequestDispatcher("formularios/registro_area.jsp");
                 break;
             default:
-                view = request.getRequestDispatcher("formularios/registros.jsp");          
+                view = request.getRequestDispatcher("formularios/registros.jsp");
         }
         view.forward(request, response);
     }
 
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
- 
-        int codigo = Integer.parseInt(request.getParameter("codigo"));
-        String nombre = request.getParameter("nombre");
-        //String insertarR = "INSERT INTO regional VALUES (5, 'Antioquia')";
-        
-        //Inicio de código probado satisfactoriamente
-        
-        int resultado = 0;
-        Connection conexion = null;
-        PreparedStatement instruccion = null;  
-        try{
-            Class.forName(ConexionBD.CONTROLADOR);
-            
-            conexion = 
-                    DriverManager.getConnection(ConexionBD.URL_BASEDATOS, 
-                            "root", "5824247");
-            
-            instruccion = conexion.prepareStatement("INSERT INTO regional " + 
-                    "(codigo, nombre_departamento) " +
-                    "VALUES (?, ?)");
-            
-            instruccion.setInt(1, codigo);
-            instruccion.setString(2, nombre);
-            resultado = instruccion.executeUpdate();
-                 
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
-        }
-        finally{
-        RequestDispatcher view = request.getRequestDispatcher("formularios/registro_regional.jsp");
-        view.forward(request, response);
-            try{
-                instruccion.close();
-                conexion.close();
-            }
-            catch(Exception ex){
-                ex.printStackTrace();
-            }
 
+        String opcion = request.getParameter("boton_registro");
+
+        if (opcion.equals("Insertar Regional")) 
+        {
+            int codigo = Integer.parseInt(request.getParameter("codigo"));
+            String nombre = request.getParameter("nombre");
+            //String insertarR = "INSERT INTO regional VALUES (5, 'Antioquia')";
+
+            //Inicio de código probado satisfactoriamente
+            int resultado = 0;
+            Connection conexion = null;
+            PreparedStatement instruccion = null;
+            try {
+                Class.forName(ConexionBD.CONTROLADOR);
+
+                conexion
+                        = DriverManager.getConnection(ConexionBD.URL_BASEDATOS,
+                                ConexionBD.NOMBREUSUARIO, ConexionBD.PASSWORD);
+
+                instruccion = conexion.prepareStatement("INSERT INTO regional "
+                        + "(codigo, nombre_departamento) "
+                        + "VALUES (?, ?)");
+
+                instruccion.setInt(1, codigo);
+                instruccion.setString(2, nombre);
+                resultado = instruccion.executeUpdate();
+
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            } catch (ClassNotFoundException ex) {
+                ex.printStackTrace();
+            } finally {
+                RequestDispatcher view = request.getRequestDispatcher("formularios/registro_regional.jsp");
+                view.forward(request, response);
+                try {
+                    instruccion.close();
+                    conexion.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+            }
+            // Fin de código probado satisfactoriamente
         } 
-        // Fin de código probado satisfactoriamente
-        
-        
+        else if (opcion.equals("Insertar Centro")) 
+        {
+            int codigo = Integer.parseInt(request.getParameter("codigo"));
+            String nombre = request.getParameter("nombre");
+            int codigoR = Integer.parseInt(request.getParameter("codigo_regional"));
+
+            //Inicio de código probado satisfactoriamente
+            int resultado = 0;
+            Connection conexion = null;
+            PreparedStatement instruccion = null;
+            try {
+                Class.forName(ConexionBD.CONTROLADOR);
+
+                conexion
+                        = DriverManager.getConnection(ConexionBD.URL_BASEDATOS,
+                                ConexionBD.NOMBREUSUARIO, ConexionBD.PASSWORD);
+
+                instruccion = conexion.prepareStatement("INSERT INTO centro "
+                        + "VALUES(?, ?, ?)");
+
+                instruccion.setInt(1, codigo);
+                instruccion.setString(2, nombre);
+                instruccion.setInt(3, codigoR);
+                resultado = instruccion.executeUpdate();
+
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            } catch (ClassNotFoundException ex) {
+                ex.printStackTrace();
+            } finally {
+                RequestDispatcher view = request.getRequestDispatcher("formularios/registro_centro.jsp");
+                view.forward(request, response);
+                try {
+                    instruccion.close();
+                    conexion.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+            }
+        }
+
         // Inicio de código por depurar y consultar
         /*
         try{
@@ -120,8 +159,7 @@ public class Registro extends HttpServlet {
         catch(ClassNotFoundException noEncontroClase){
             noEncontroClase.printStackTrace();
             System.exit(1);
-        }*/ 
+        }*/
         //Fin de código por reparar 
-        
     }
 }

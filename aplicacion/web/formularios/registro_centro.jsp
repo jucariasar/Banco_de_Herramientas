@@ -13,7 +13,7 @@
                     <option type="number" value="17">Caldas</option>
                     <option type="number" value="68">Santandes</option>
 		</select><br><br>	
-		<input type="submit" value="Insertar">
+		<input type="submit" value="Insertar Centro" name="boton_registro">
 	</form>
 
 <%@ include file="/footer.jsp" %>
