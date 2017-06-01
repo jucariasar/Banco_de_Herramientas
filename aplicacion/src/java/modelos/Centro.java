@@ -9,6 +9,13 @@ public class Centro {
     private int codigo_regional; // Codigo de la regional a la que esta asociada
                              // Clave foranea a Regional en BD
 
+    public Centro(){
+        this.codigo = 0;
+        this.nombre = null;
+        this.codigo_regional = 0;
+    }
+    
+    
     public Centro(int codigo, String nombre, int codigo_regional) {
         this.codigo = codigo;
         this.nombre = nombre;

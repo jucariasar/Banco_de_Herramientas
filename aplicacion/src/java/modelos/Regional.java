@@ -6,7 +6,13 @@ public class Regional {
     
     private int codigo;  // Identificador único para instancias de la clase
     private String nombre;
-
+    
+    public Regional()
+    {
+        this.codigo = 0;
+        this.nombre = null;
+    }
+    
     public Regional(int codigo, String nombre) {
         this.codigo = codigo;
         this.nombre = nombre;

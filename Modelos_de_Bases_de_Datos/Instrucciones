@@ -1,0 +1,16 @@
+/*
+Intrucciones en myql
+*/
+
+
+SELECT * FROM tabla;        /*Consulta: Mostrar TODOS los datos en la tabla*/
+
+SHOW COLUMNS FROM tabla;    /*Mostrar la estructura básica de una tabla*/
+
+INSERT INTO tabla VALUES    /*Insertar valores en una tabla*/
+(atr1, atr2, atrn);
+
+DELETE FROM tabla; /*Borrar TODOS los datos de una tabla*/
+
+DELETE FROM tabla WHERE condición; /*Borrar datos de una tabla donde la condición*/
+								   /*se cumpla*/

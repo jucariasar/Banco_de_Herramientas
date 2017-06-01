@@ -17,8 +17,12 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import modelos.Centro;
+import modelos.Regional;
 
 @WebServlet(name = "Registro", urlPatterns = {"/Registro"})
 public class Registro extends HttpServlet {
@@ -28,20 +32,99 @@ public class Registro extends HttpServlet {
             throws ServletException, IOException {
         int opt = Integer.parseInt(request.getParameter("accion"));
 
-        RequestDispatcher view;
+        RequestDispatcher view = null; // Para invocar al recurso web
 
+        // De acuerso al valor de accion se debe desplegar un formulario diferente
         switch (opt) {
             case 1:
                 view = request.getRequestDispatcher("formularios/registro_regional.jsp");
                 break;
             case 2:
-                view = request.getRequestDispatcher("formularios/registro_centro.jsp");
+                List<Regional> regionales = new ArrayList<>(); // Arreglo para guardar los
+                //objetos regional que se asocian a cada centro
+
+                try {
+                    Class.forName(ConexionBD.CONTROLADOR); //Carga el controlador a la clase
+
+                    // Se especifican las propiedades del objeto JdbcRowSet
+                    JdbcRowSet rowSet = new JdbcRowSetImpl();
+                    rowSet.setUrl(ConexionBD.URL_BASEDATOS); // Establece la URL de la base de datos
+                    rowSet.setUsername(ConexionBD.NOMBREUSUARIO); // Establece el nombre del usuario en la BD
+                    rowSet.setPassword(ConexionBD.PASSWORD); // Establece el password de la BD
+                    rowSet.setCommand("SELECT * FROM regional"); // Establece la consulta
+                    rowSet.execute(); // Ejecuta la consulta
+
+                    ResultSetMetaData metaDatos = rowSet.getMetaData(); // Obtine los datos del esquema de la BD
+                    int numeroDeColumnas = metaDatos.getColumnCount(); // Ontiene el el numero de columnas de la BD
+
+                    // Recorre cada fila
+                    while (rowSet.next()) {
+                        Regional rtemp = new Regional();
+                        for (int i = 1; i <= numeroDeColumnas; i++) {
+                            if (i == 1) { // optiene los datos de la primera columna en cada recorrido de filas
+                                rtemp.setCodigo((int) rowSet.getObject(i)); // Establece el código en un objeto Regional
+                            } else { // optiene los datos de la segunda columna columna en cada recorrido de filas
+                                rtemp.setNombre_departamento((String) rowSet.getObject(i)); // Establece el nombre en un objeto Regional
+                            }
+                        }
+                        regionales.add(rtemp); // Guarda el objeto creado en una lista de objetos Regional
+                    }
+                    request.setAttribute("rgnl", regionales); // pasa la lista regionales a un JSP como rgnl
+
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                } catch (ClassNotFoundException ex) {
+                    ex.printStackTrace();
+                } finally {
+                    view = request.getRequestDispatcher("formularios/registro_centro.jsp");
+                }
                 break;
             case 3:
-                view = request.getRequestDispatcher("formularios/registro_area.jsp");
+                List<Centro> centros = new ArrayList<>(); // Arreglo para guardar los
+                //objetos centros que se asocian a cada centro
+
+                try {
+                    Class.forName(ConexionBD.CONTROLADOR); //Carga el controlador a la clase
+
+                    // Se especifican las propiedades del objeto JdbcRowSet
+                    JdbcRowSet rowSet = new JdbcRowSetImpl();
+                    rowSet.setUrl(ConexionBD.URL_BASEDATOS); // Establece la URL de la base de datos
+                    rowSet.setUsername(ConexionBD.NOMBREUSUARIO); // Establece el nombre del usuario en la BD
+                    rowSet.setPassword(ConexionBD.PASSWORD); // Establece el password de la BD
+                    rowSet.setCommand("SELECT * FROM centro"); // Establece la consulta
+                    rowSet.execute(); // Ejecuta la consulta
+
+                    ResultSetMetaData metaDatos = rowSet.getMetaData(); // Obtine los datos del esquema de la BD
+                    int numeroDeColumnas = metaDatos.getColumnCount(); // Ontiene el el numero de columnas de la BD
+
+                    // Recorre cada fila
+                    while (rowSet.next()) {
+                        Centro ctemp = new Centro();
+                        for (int i = 1; i <= numeroDeColumnas; i++) {
+                            if (i == 1) { // optiene los datos de la primera columna en cada recorrido de filas
+                                ctemp.setCodigo((int) rowSet.getObject(i)); // Establece el código en un objeto Regional
+                            } else if(i == 2){ // optiene los datos de la segunda columna columna en cada recorrido de filas
+                                ctemp.setNombre((String) rowSet.getObject(i)); // Establece el nombre en un objeto Regional
+                            }
+                            else{
+                                ctemp.setCodigo_regional((int) rowSet.getObject(i));
+                            }
+                        }
+                        centros.add(ctemp); // Guarda el objeto creado en una lista de objetos Regional
+                    }
+                    request.setAttribute("cent", centros); // pasa la lista regionales a un JSP como rgnl
+
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                } catch (ClassNotFoundException ex) {
+                    ex.printStackTrace();
+                } finally {
+                    view = request.getRequestDispatcher("formularios/registro_area.jsp");
+                }
                 break;
+
             default:
-                view = request.getRequestDispatcher("formularios/registros.jsp");
+                view = request.getRequestDispatcher("formularios/area.jsp");
         }
         view.forward(request, response);
     }
@@ -52,30 +135,34 @@ public class Registro extends HttpServlet {
 
         String opcion = request.getParameter("boton_registro");
 
-        if (opcion.equals("Insertar Regional")) 
+        if (opcion.equals("Insertar Regional")) // Inserta datos de la Regional
         {
+
             int codigo = Integer.parseInt(request.getParameter("codigo"));
             String nombre = request.getParameter("nombre");
-            //String insertarR = "INSERT INTO regional VALUES (5, 'Antioquia')";
 
-            //Inicio de código probado satisfactoriamente
-            int resultado = 0;
-            Connection conexion = null;
-            PreparedStatement instruccion = null;
+            int resultado = 0; //Guarda la cantidad de filas que se modificaron en la inserccion 
+            Connection conexion = null; // Para manejar la conexion a la base de datos
+            PreparedStatement instruccion = null; // Maneja la instruccion  de inserccion de sql
+
             try {
-                Class.forName(ConexionBD.CONTROLADOR);
+                Class.forName(ConexionBD.CONTROLADOR); // Carga el controlador
 
+                // Conexion a la base de datos mediante los respectivos parametros
+                // de direccion, usuario y contraseña
                 conexion
                         = DriverManager.getConnection(ConexionBD.URL_BASEDATOS,
                                 ConexionBD.NOMBREUSUARIO, ConexionBD.PASSWORD);
 
+                // Maneja una instrucción de inserccion en la base de datos
                 instruccion = conexion.prepareStatement("INSERT INTO regional "
                         + "(codigo, nombre_departamento) "
                         + "VALUES (?, ?)");
 
-                instruccion.setInt(1, codigo);
-                instruccion.setString(2, nombre);
-                resultado = instruccion.executeUpdate();
+                instruccion.setInt(1, codigo); // Inserta dato de tipo int en el primer ? de instrucción
+                instruccion.setString(2, nombre); // Inserta dato de tipo String en el segundo ? de instrucción
+                resultado = instruccion.executeUpdate(); // Ejecuta la instrucción y devuelve cuantas filas fueron
+                // modificacdas con la instrucción
 
             } catch (SQLException ex) {
                 ex.printStackTrace();
@@ -92,18 +179,21 @@ public class Registro extends HttpServlet {
                 }
 
             }
-            // Fin de código probado satisfactoriamente
-        } 
-        else if (opcion.equals("Insertar Centro")) 
-        {
-            int codigo = Integer.parseInt(request.getParameter("codigo"));
+
+        } else if (opcion.equals("Insertar Centro")) {
+
+            List<Regional> regionales = new ArrayList<>();
+
             String nombre = request.getParameter("nombre");
+            int codigo = Integer.parseInt(request.getParameter("codigo"));
             int codigoR = Integer.parseInt(request.getParameter("codigo_regional"));
 
-            //Inicio de código probado satisfactoriamente
-            int resultado = 0;
-            Connection conexion = null;
-            PreparedStatement instruccion = null;
+            int resultado = 0; // Para guardar cuantas filas fueron modificadas
+            Connection conexion = null; // Para manejar la conexión con la BD
+            PreparedStatement instruccion = null; // Instruccion para manejar insesiones
+            Statement instruccionQuery = null; // Instrucción para manejar consultas
+            ResultSet conjuntoResultados = null; // Objeto para guardar el resultado de una consulta
+
             try {
                 Class.forName(ConexionBD.CONTROLADOR);
 
@@ -112,18 +202,42 @@ public class Registro extends HttpServlet {
                                 ConexionBD.NOMBREUSUARIO, ConexionBD.PASSWORD);
 
                 instruccion = conexion.prepareStatement("INSERT INTO centro "
-                        + "VALUES(?, ?, ?)");
+                        + "VALUES(?, ?, ?)"); //
 
-                instruccion.setInt(1, codigo);
-                instruccion.setString(2, nombre);
-                instruccion.setInt(3, codigoR);
-                resultado = instruccion.executeUpdate();
+                instruccion.setInt(1, codigo); // Establece dato entero del objeto prepareStatement en el primer ? en la linea 168
+                instruccion.setString(2, nombre); // Establece dato String del objeto prepareStatement en el segundo ? en la linea 168
+                instruccion.setInt(3, codigoR); // Establece dato entero del objeto prepareStatement en el tercer ? en la linea 168
+                resultado = instruccion.executeUpdate(); // Ejecuta la instrucción de insersion guardada previamente
+
+                // Crea objeto Statement para consultar la base de datos
+                instruccionQuery = conexion.createStatement();
+
+                // Consulta la base de datos
+                conjuntoResultados = instruccionQuery.executeQuery("SELECT * FROM regional");
+
+                // Procesa los resultados de la consulta
+                ResultSetMetaData metaDatos = conjuntoResultados.getMetaData();
+                int numeroDeColumnas = metaDatos.getColumnCount();
+
+                while (conjuntoResultados.next()) {
+                    Regional rtemp = new Regional();
+                    for (int i = 1; i <= numeroDeColumnas; i++) {
+                        if (i == 1) { // optiene los datos de la primera columna en cada recorrido de filas
+                            rtemp.setCodigo((int) conjuntoResultados.getObject(i)); // Establece el código en un objeto Regional
+                        } else { // optiene los datos de la segunda columna columna en cada recorrido de filas
+                            rtemp.setNombre_departamento((String) conjuntoResultados.getObject(i)); // Establece el nombre en un objeto Regional
+                        }
+                    }
+                    regionales.add(rtemp); // Guarda el objeto creado en una lista de objetos Regional
+                }
+                request.setAttribute("rgnl", regionales); // pasa la lista regionales a un JSP como rgnl
 
             } catch (SQLException ex) {
                 ex.printStackTrace();
             } catch (ClassNotFoundException ex) {
                 ex.printStackTrace();
             } finally {
+
                 RequestDispatcher view = request.getRequestDispatcher("formularios/registro_centro.jsp");
                 view.forward(request, response);
                 try {
@@ -135,31 +249,77 @@ public class Registro extends HttpServlet {
 
             }
         }
+        else if(opcion.equals("Insertar Area")){
+            
+            List<Centro> centros = new ArrayList<>();
 
-        // Inicio de código por depurar y consultar
-        /*
-        try{
-            Class.forName(ConexionBD.CONTROLADOR);
-                
-            JdbcRowSet rowSet= new JdbcRowSetImpl();
-            rowSet.setUrl(ConexionBD.URL_BASEDATOS);
-            rowSet.setUsername(ConexionBD.NOMBREUSUARIO);
-            rowSet.setPassword(ConexionBD.PASSWORD);
-            rowSet.setCommand("INSERT INTO regional VALUES (68, 'Antioquia')");
-            rowSet.execute();
-            RequestDispatcher view = request.getRequestDispatcher("registro_regional.jsp");
-            view.forward(request, response);
-            //System.out.print("Dato Insertado Correctamente");
+            String nombre = request.getParameter("nombre");
+            int codigoC = Integer.parseInt(request.getParameter("codigo_centro"));
+ 
+            int resultado = 0; // Para guardar cuantas filas fueron modificadas
+            Connection conexion = null; // Para manejar la conexión con la BD
+            PreparedStatement instruccion = null; // Instruccion para manejar insersiones
+            Statement instruccionQuery = null; // Instrucción para manejar consultas
+            ResultSet conjuntoResultados = null; // Objeto para guardar el resultado de una consulta
+
+            try {
+                Class.forName(ConexionBD.CONTROLADOR);
+
+                conexion
+                        = DriverManager.getConnection(ConexionBD.URL_BASEDATOS,
+                                ConexionBD.NOMBREUSUARIO, ConexionBD.PASSWORD);
+
+                instruccion = conexion.prepareStatement("INSERT INTO area "
+                        + "VALUES(?, ?)"); //
+
+               // instruccion.setInt(1, codigo); // Establece dato entero del objeto prepareStatement en el primer ? en la linea 168
+                instruccion.setString(1, nombre); // Establece dato String del objeto prepareStatement en el segundo ? en la linea 168
+                instruccion.setInt(2, codigoC); // Establece dato entero del objeto prepareStatement en el tercer ? en la linea 168
+                resultado = instruccion.executeUpdate(); // Ejecuta la instrucción de insersion guardada previamente
+
+                // Crea objeto Statement para consultar la base de datos
+                instruccionQuery = conexion.createStatement();
+
+                // Consulta la base de datos
+                conjuntoResultados = instruccionQuery.executeQuery("SELECT * FROM centro");
+
+                // Procesa los resultados de la consulta
+                ResultSetMetaData metaDatos = conjuntoResultados.getMetaData();
+                int numeroDeColumnas = metaDatos.getColumnCount();
+
+                while (conjuntoResultados.next()) {
+                    Centro ctemp = new Centro();
+                    for (int i = 1; i <= numeroDeColumnas; i++) {
+                        if (i == 1) { // optiene los datos de la primera columna en cada recorrido de filas
+                            ctemp.setCodigo((int) conjuntoResultados.getObject(i)); // Establece el código en un objeto Regional
+                        } else if(i == 2){ // optiene los datos de la segunda columna columna en cada recorrido de filas
+                            ctemp.setNombre((String) conjuntoResultados.getObject(i)); // Establece el nombre en un objeto Regional
+                        }else{
+                            ctemp.setCodigo_regional((int) conjuntoResultados.getObject(i));
+                        }
+                    }
+                    centros.add(ctemp); // Guarda el objeto creado en una lista de objetos Centro
+                }
+                request.setAttribute("cent", centros); // pasa la lista regionales a un JSP como rgnl
+
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            } catch (ClassNotFoundException ex) {
+                ex.printStackTrace();
+            } finally {
+
+                RequestDispatcher view = request.getRequestDispatcher("formularios/registro_area.jsp");
+                view.forward(request, response);
+                try {
+                    instruccion.close();
+                    conexion.close();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+            }
+            
+            
         }
-        catch(SQLException exceptionSql){
-                
-            exceptionSql.printStackTrace();
-            System.exit(1);
-        }
-        catch(ClassNotFoundException noEncontroClase){
-            noEncontroClase.printStackTrace();
-            System.exit(1);
-        }*/
-        //Fin de código por reparar 
     }
 }
