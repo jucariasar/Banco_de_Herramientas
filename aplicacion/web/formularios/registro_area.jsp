@@ -5,7 +5,7 @@
 <c:if test="${not empty cent}">
     <form method="POST" action="./Registro">
         <br><br><br>
-        <b>Nombre del Área:</b><input type="text" name="nombre"><br><br>
+        <b>Nombre del Área:</b><input type="text" name="nombre" required><br><br>
         <b>Seleccione un Centro:</b>
         <select name="codigo_centro">
             <c:forEach items="${cent}" var="ct">

@@ -31,3 +31,7 @@ TRUNCATE TABLE nombre_tabla;
 CONSTRAINT `FK_2C0BB1B8D48E193` FOREIGN KEY (`external_id`) REFERENCES `OtherTable` (`id`))*/
 
 /*Para solucionarlo, podemos desactivar momentaneamente la comprobación de las claves externas, vaciar las tablas y, de nuevo, activar la comprobación de claves externas.*/
+
+SET FOREIGN_KEY_CHECKS=0;
+TRUNCATE TABLE nombre_tabla;
+SET FOREIGN_KEY_CHECKS=1;

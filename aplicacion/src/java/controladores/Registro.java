@@ -122,9 +122,11 @@ public class Registro extends HttpServlet {
                     view = request.getRequestDispatcher("formularios/registro_area.jsp");
                 }
                 break;
-
+            case 4:
+                view = request.getRequestDispatcher("formularios/registro_usuario.jsp");
+                break;
             default:
-                view = request.getRequestDispatcher("formularios/area.jsp");
+                view = request.getRequestDispatcher("formularios/registros.jsp");
         }
         view.forward(request, response);
     }

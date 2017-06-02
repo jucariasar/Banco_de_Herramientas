@@ -20,7 +20,7 @@
 		<li><a href="http://localhost:8084/aplicacion/Registro?accion=1">Registrar Regional</a></li>
 		<li><a href="http://localhost:8084/aplicacion/Registro?accion=2">Registrar Centro</a></li>
 		<li><a href="http://localhost:8084/aplicacion/Registro?accion=3">Registrar Area</a></li>
-		<li><a href="http://localhost:8084/aplicacion/Registro?accion=4">Registrar Persona</a></li>
+		<li><a href="http://localhost:8084/aplicacion/Registro?accion=4">Registrar Usuario</a></li>
 		<li><a href="http://localhost:8084/aplicacion/Registro?accion=5">Registrar Elemento</a></li>
 	</ul>
 
