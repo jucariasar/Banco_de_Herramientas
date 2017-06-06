@@ -48,7 +48,7 @@ FOREIGN KEY(codigo_programa, version_programa) REFERENCES programa(codigo, versi
 
 
 /*Se crea la relación persona tal cual se especifica en el modelo relacional*/
-CREATE TABLE persona(
+CREATE TABLE usuario(
 carne BIGINT UNSIGNED PRIMARY KEY,
 nombres VARCHAR(60) NOT NULL,
 apellidos VARCHAR(60) NOT NULL,

@@ -33,9 +33,9 @@ public class Login extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        long id = Integer.parseInt(request.getParameter("documento"));
+        String correo = request.getParameter("correo");
         String password = request.getParameter("passwd");
-        String consulta = "SELECT passwd FROM usuario WHERE carne=" + id;
+        String consulta = "SELECT passwd FROM usuario WHERE email=\"" + correo + "\"";
         RequestDispatcher view = null;
         try {
             Class.forName(ConexionBD.CONTROLADOR); //Carga el controlador a la clase

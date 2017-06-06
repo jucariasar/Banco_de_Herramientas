@@ -11,7 +11,7 @@
         <form method="POST" action="./Login">
             <label for="">Iniciar Sesión</label><br>
             
-            <input type="text" name="documento" placeholder="N° de Documento" required><br/>
+            <input type="email" name="correo" placeholder="Corre Electronico" required><br/>
             <input type="password" name="passwd" placeholder="Contraseña" required><br/>
             
             <input type="submit" value="Ingresar"> <br>

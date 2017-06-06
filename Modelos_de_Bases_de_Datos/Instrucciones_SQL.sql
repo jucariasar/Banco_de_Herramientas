@@ -35,3 +35,18 @@ CONSTRAINT `FK_2C0BB1B8D48E193` FOREIGN KEY (`external_id`) REFERENCES `OtherTab
 SET FOREIGN_KEY_CHECKS=0;
 TRUNCATE TABLE nombre_tabla;
 SET FOREIGN_KEY_CHECKS=1;
+
+/*Modificar tabla*/
+
+/*Añadir clave(s) primaria a tabla creada previamente*/
+ALTER TABLE nombre_tabla ADD PRIMARY KEY (atr1, atr2, atrn)
+
+/*Añadir clave(s) foraneas a tabla creada previamente*/
+ALTER TABLE nombre_tabla  ADD CONSTRAINT
+
+
+/*Crear un indice*/
+CREATE INDEX nombre_del_indice ON nombre_tabla (atr);
+
+/*Crear un indice que no permita valores repetidos*/
+CREATE UNIQUE INDEX nombre_del_inice ON nombre_tabla (atr); 
