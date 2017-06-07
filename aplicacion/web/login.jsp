@@ -12,7 +12,7 @@
             <label for="">Iniciar Sesión</label><br>
             
             <input type="email" name="correo" placeholder="Corre Electronico" required><br/>
-            <input type="password" name="passwd" placeholder="Contraseña" required><br/>
+            <input type="pasword" name="passwd" placeholder="Contraseña" required><br/>
             
             <input type="submit" value="Ingresar"> <br>
             <a href="" >Olvide mi contraseña</a>
