@@ -1,4 +1,7 @@
+<!-- Directiva page de JSP-->
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<!-- Directiva taglib de JSP-->
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
@@ -12,7 +15,7 @@
             <label for="">Iniciar Sesión</label><br>
             
             <input type="email" name="correo" placeholder="Corre Electronico" required><br/>
-            <input type="pasword" name="passwd" placeholder="Contraseña" required><br/>
+            <input type="password" name="passwd" placeholder="Contraseña" required><br/>
             
             <input type="submit" value="Ingresar"> <br>
             <a href="" >Olvide mi contraseña</a>

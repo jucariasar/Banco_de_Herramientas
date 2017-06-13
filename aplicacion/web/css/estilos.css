@@ -1,29 +1,17 @@
-*{
+* {
 	margin:0;
 	padding:0;
 }
 
-
 body {
 	background: #fffffa;
 }
-
 
 header {
 	width: 100%;
 	overflow:hidden;
 	background: #252932;
 	margin-bottom: 20px;
-}
-
-p.footer
-{
-    text-align:right;
-    font-size:11px;
-    border-top:1px solid #D0D0D0;
-    line-height:32px;
-    padding:0 10px;
-    margin:20px 0 0
 }
 
 .wrapper {
@@ -33,7 +21,6 @@ p.footer
 	overflow: hidden;
 }
 
-
 header .logo {
 	color:#f2f2f2;
 	font-size: 50px;
@@ -41,12 +28,10 @@ header .logo {
 	float: left;
 }
 
-
 header nav {
 	float: right;
 	line-height: 200px;
 }
-
 
 header nav a {
 	display: inline-block;
@@ -66,6 +51,15 @@ header nav a:hover {
 	border-radius: 50px;
 }
 
+p.footer
+{
+    text-align:right;
+    font-size:11px;
+    border-top:1px solid #D0D0D0;
+    line-height:32px;
+    padding:0 10px;
+    margin:20px 0 0
+}
 
 .header2 {
 	position: fixed;
@@ -78,11 +72,9 @@ header nav a:hover {
 	font-size: 30px;
 }
 
-
-header2 .nav {
+.header2 nav {
 	line-height: 100px;
 }
-
 
 .contenido p{
 	margin-bottom: 1em;

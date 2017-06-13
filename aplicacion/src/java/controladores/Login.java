@@ -19,26 +19,36 @@ import modelos.Usuario;
 @WebServlet(name = "Login", urlPatterns = {"/Login"})
 public class Login extends HttpServlet {
 
+    // Se desplega la vista de login.jsp
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession(); // Para que se crea el objeto session acá ??
 
+        // Invoca al recurso web Login.jsp
         RequestDispatcher view = request.getRequestDispatcher("login.jsp");
+
+        // Reenvia la solicitud o petición del Sevlet al jsp
         view.forward(request, response);
 
     }
 
+    // Se invoca el método POST desde Login.jsp
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String correo = request.getParameter("correo");
-        String password = request.getParameter("passwd");
+        // obtiene los parametros de la vista desde la cual se llama el método POST
+        String correo = request.getParameter("correo"); // Obtiene el parametro "correo" de la vista Login.jsp
+        String password = request.getParameter("passwd"); // Obtiene el parametro "passwd" de la vista Login.jsp
+
+        //Almacena un String para posteriormente realizar una consulta a la base de datos con el correo.
         String consulta = "SELECT passwd FROM usuario WHERE email=\"" + correo + "\"";
+
+        // Variable de referencia para invocar posteriormente a un recurso Web
         RequestDispatcher view = null;
         try {
-            Class.forName(ConexionBD.CONTROLADOR); //Carga el controlador a la clase
+            // Carga el controlador a la clase
+            Class.forName(ConexionBD.CONTROLADOR);
 
             // Se especifican las propiedades del objeto JdbcRowSet
             JdbcRowSet rowSet = new JdbcRowSetImpl();
@@ -47,22 +57,34 @@ public class Login extends HttpServlet {
             rowSet.setPassword(ConexionBD.PASSWORD); // Establece el password de la BD
             rowSet.setCommand(consulta); // Establece la consulta
             rowSet.execute(); // Ejecuta la consulta
-            while(rowSet.next()){
-            if (password.equals(rowSet.getObject(1))) {
-                view = request.getRequestDispatcher("formularios/registros.jsp");
-            } else {
-                view = request.getRequestDispatcher("login.jsp");
-            }
+
+            // Recorre las filas de la consulta
+            while (rowSet.next()) {
+
+                // Si el password ingresado por el usuario al cual pertenece el correo
+                // es igual al password en la base de datos
+                if (password.equals(rowSet.getObject(1))) {
+                    // Invoca de modo directo al recurso Web registros.jsp
+                    view = request.getRequestDispatcher("formularios/registros.jsp");
+                } else { // De lo contrario
+                    // Invoca al recurso web login.jsp
+                    view = request.getRequestDispatcher("login.jsp");
+                }
             }
 
         } catch (SQLException ex) {
+            // Si la consulta no es correcta lanza un SQLException
+            // Invoca de modo directo al recurso login.jsp
             view = request.getRequestDispatcher("login.jsp");
+            // Imprime la pila de la traza
             ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
+            // Si el controlador no es el correcto lanza un ClassNotFoundException
+            // Invoca de modo directo al recurso login.jsp
             view = request.getRequestDispatcher("login.jsp");
             ex.printStackTrace();
-        }
-        finally{
+        } finally {
+            // Reenvia la petición del Servlet al recurso Web que se haya invocado
             view.forward(request, response);
         }
 
