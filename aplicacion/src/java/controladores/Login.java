@@ -5,6 +5,8 @@ import conexionBD.ConexionBD;
 import java.io.IOException;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -46,17 +48,17 @@ public class Login extends HttpServlet {
 
         // Variable de referencia para invocar posteriormente a un recurso Web
         RequestDispatcher view = null;
+        
+        // Objeto ConexionBD para gestionar la comunicacion con la base de datos
+        ConexionBD conexionQuery = new ConexionBD();
+        
+        // Objeto JdbcRowSet para manejar con el resultado de la consulta.
+        JdbcRowSet rowSet = new JdbcRowSetImpl();
+        
         try {
-            // Carga el controlador a la clase
-            Class.forName(ConexionBD.CONTROLADOR);
-
-            // Se especifican las propiedades del objeto JdbcRowSet
-            JdbcRowSet rowSet = new JdbcRowSetImpl();
-            rowSet.setUrl(ConexionBD.URL_BASEDATOS); // Establece la URL de la base de datos
-            rowSet.setUsername(ConexionBD.NOMBREUSUARIO); // Establece el nombre del usuario en la BD
-            rowSet.setPassword(ConexionBD.PASSWORD); // Establece el password de la BD
-            rowSet.setCommand(consulta); // Establece la consulta
-            rowSet.execute(); // Ejecuta la consulta
+            // Se invoca al método conectarConsulta el cual se encarga de realizar
+            // la conexion con la BD y ejecutar la consulta que se quiera.
+            conexionQuery.conectarConsulta(rowSet, consulta);
 
             // Recorre las filas de la consulta
             while (rowSet.next()) {
@@ -87,7 +89,5 @@ public class Login extends HttpServlet {
             // Reenvia la petición del Servlet al recurso Web que se haya invocado
             view.forward(request, response);
         }
-
     }
-
 }

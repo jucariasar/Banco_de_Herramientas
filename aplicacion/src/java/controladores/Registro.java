@@ -47,58 +47,21 @@ public class Registro extends HttpServlet {
                 // Invoca al recurso Web registro_regional.jsp)
                 view = request.getRequestDispatcher("formularios/registro_regional.jsp");
                 break;
-            case 2: // Caso 2 Registrar Centro
-                // Lista de objetos regional que se asocian a cada centro
-                List<Regional> regionales = new ArrayList<>();
-
+            case 2:  // Caso 2 Registrar Centro
                 try {
-                    //Carga el controlador de la clase
-                    Class.forName(ConexionBD.CONTROLADOR);
+                    // Obtine la lista de regionales registradas en la BD
+                    List<Regional> regionales = Regional.consultarRegionales();
 
-                    // Se especifican las propiedades del objeto JdbcRowSet
-                    JdbcRowSet rowSet = new JdbcRowSetImpl(); // Crea objetos rowSet para manejar las consultas
-                    rowSet.setUrl(ConexionBD.URL_BASEDATOS); // Establece la URL de la base de datos
-                    rowSet.setUsername(ConexionBD.NOMBREUSUARIO); // Establece el nombre del usuario en la BD
-                    rowSet.setPassword(ConexionBD.PASSWORD); // Establece el password de la BD
-                    rowSet.setCommand("SELECT * FROM regional"); // Establece la consulta
-                    rowSet.execute(); // Ejecuta la consulta
-
-                    // Obtiene los datos del esquema de la BD (Nombre de las columnas)
-                    ResultSetMetaData metaDatos = rowSet.getMetaData();
-
-                    // Obtiene el el numero de columnas de la BD
-                    int numeroDeColumnas = metaDatos.getColumnCount();
-
-                    // Recorre cada fila de la consulta de la relacion regional
-                    while (rowSet.next()) {
-
-                        // Crea objeto Regional temporal para despues guardarlo en el ArrayList regionales
-                        Regional rtemp = new Regional();
-
-                        // For para recorrer cada columna en la fila
-                        for (int i = 1; i <= numeroDeColumnas; i++) {
-
-                            // Si es la primera columna
-                            if (i == 1) { // optiene los datos de la primera columna en cada recorrido de filas
-                                rtemp.setCodigo((int) rowSet.getObject(i)); // Establece el código en un objeto Regional
-                            } else { // optiene los datos de la segunda columna columna en cada recorrido de filas
-                                rtemp.setNombre_departamento((String) rowSet.getObject(i)); // Establece el nombre en un objeto Regional
-                            }
-                        } // Fin del for
-                        regionales.add(rtemp); // Guarda el objeto creado en una lista de objetos Regional
-                    } // Fin del whilw
-
-                    // pasa la lista regionales al JSP que se invoca con el objeto RequestDispacher
+                    // pasa la lista de regionales al JSP que se invoca con el objeto RequestDispacher
                     request.setAttribute("rgnl", regionales);
-
+                    // Invoca de modo directo al recurso Web registro_centro.jsp
+                    view = request.getRequestDispatcher("formularios/registro_centro.jsp");
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 } catch (ClassNotFoundException ex) {
                     ex.printStackTrace();
-                } finally {
-                    // Invoca de modo directo al recurso Web registro_centro.jsp
-                    view = request.getRequestDispatcher("formularios/registro_centro.jsp");
-                }
+                } 
+
                 break;
             case 3: // Caso 3 Registrar Area
 
@@ -190,7 +153,7 @@ public class Registro extends HttpServlet {
 
                     // pasa la lista regionales al JSP que se invoca con el objeto RequestDispacher
                     request.setAttribute("rgnl", rles);
-                    
+
                     /*
                     int codigoR;
                     codigoR = Integer.parseInt(request.getParameter("codigo_regional"));
@@ -221,7 +184,7 @@ public class Registro extends HttpServlet {
                     }
                     request.setAttribute("cent", cts); // pasa la lista regionales a un JSP como rgnl
                     //view = request.getRequestDispatcher("formularios/registro_usuario.jsp");
-                   */
+                     */
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 } catch (ClassNotFoundException ex) {

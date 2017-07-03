@@ -13,7 +13,7 @@ import javax.sql.rowset.JdbcRowSet;
 import org.json.simple.JSONStreamAware;
 import org.json.simple.JSONValue;
 
-public class Centro implements JSONStreamAware{
+public class Centro implements JSONStreamAware {
 
     private int codigo; // Identificador único para instancias de la clase
     private String nombre; // El nombre del Centro
@@ -63,7 +63,7 @@ public class Centro implements JSONStreamAware{
         try {
             //Carga el controlador de la clase
             Class.forName(ConexionBD.CONTROLADOR);
-            
+
             // Almacena el string necesario para realizar la consulta
             consulta = "SELECT nombre_departamento FROM regional WHERE codigo=" + this.getCodigo_regional();
 
@@ -86,7 +86,7 @@ public class Centro implements JSONStreamAware{
             ex.printStackTrace();
             return "Error en la conexion en la BD";
         }
-        
+
         return nombreR;
     }
 
