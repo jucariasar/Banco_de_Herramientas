@@ -12,15 +12,15 @@ nombre_departamento VARCHAR(30) UNIQUE NOT NULL
 CREATE TABLE centro(
 codigo INT PRIMARY KEY,
 nombre VARCHAR(60) NOT NULL,
-codigo_regional INT,
+codigo_regional INT NOT NULL,
 FOREIGN KEY(codigo_regional) REFERENCES regional(codigo)
 );
 
 
 /*Se crea la relación area con todos sus atributos y claves foraneas*/
 CREATE TABLE area(
-nombre VARCHAR(60) NOT NULL,
-codigo_centro INT NOT NULL,
+nombre VARCHAR(60),
+codigo_centro INT,
 PRIMARY KEY(nombre, codigo_centro),
 FOREIGN KEY(codigo_centro) REFERENCES centro(codigo)
 );
@@ -68,7 +68,7 @@ CREATE TABLE aprendiz(
 estado VARCHAR(20) NOT NULL,
 carne BIGINT UNSIGNED PRIMARY KEY,
 numero_ficha BIGINT UNSIGNED NOT NULL,
-FOREIGN KEY(carne) REFERENCES persona(carne),
+FOREIGN KEY(carne) REFERENCES usuario(carne),
 FOREIGN KEY(numero_ficha) REFERENCES ficha(numero_ficha)
 );
 
@@ -80,7 +80,7 @@ supervisor BIGINT UNSIGNED,
 carne BIGINT UNSIGNED PRIMARY KEY,
 tipo_empleado VARCHAR(20) NOT NULL,
 FOREIGN KEY(supervisor) REFERENCES empleado(carne),
-FOREIGN KEY(carne) REFERENCES persona(carne)
+FOREIGN KEY(carne) REFERENCES usuario(carne)
 );
 
 
@@ -89,7 +89,7 @@ CREATE TABLE planta(
 grado INT,
 fecha_vinculacion DATE,
 carne BIGINT UNSIGNED PRIMARY KEY,
-FOREIGN KEY(carne) REFERENCES persona(carne)
+FOREIGN KEY(carne) REFERENCES usuario(carne)
 );
 
 
@@ -99,7 +99,7 @@ numero_contrato INT,
 fecha_inicio DATE,
 fecha_fin DATE,
 carne BIGINT UNSIGNED PRIMARY KEY,
-FOREIGN KEY(carne) REFERENCES persona(carne)
+FOREIGN KEY(carne) REFERENCES usuario(carne)
 );
 
 
@@ -167,4 +167,20 @@ codigo_centro INT,
 PRIMARY KEY(codigo_elemento, carne_empleado, nombre_area, codigo_centro),
 FOREIGN KEY(codigo_elemento, nombre_area, codigo_centro) REFERENCES elemento(codigo, nombre_area, codigo_centro),
 FOREIGN KEY(carne_empleado) REFERENCES empleado(carne)
+);
+
+/*Relación prestamos*/
+CREATE TABLE prestamo(
+codigo_elemento BIGINT UNSIGNED,
+nombre_area VARCHAR(60),
+codigo_centro INT,
+carne_usuario BIGINT UNSIGNED,
+nombre_elemento VARCHAR(100) NOT NULL,
+nombres_usuario VARCHAR(60) NOT NULL,
+apellidos_usuario VARCHAR(60) NOT NULL,
+fecha_prestamo DATE NOT NULL,
+cantidad_prestada NOT NULL,
+PRIMARY KEY(codigo_elemento, nombre_area, codigo_centro, carne_usuario),
+FOREIGN KEY(codigo_elemento, nombre_area, codigo_centro) REFERENCES elemento(codigo, nombre_area, codigo_centro),
+FOREIGN KEY(carne_usuario) REFERENCES usuario(carne)
 );

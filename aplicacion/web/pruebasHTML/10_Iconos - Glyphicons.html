@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Iconos</title>
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <!--Para utilizar iconos que estan en la pagina de bootstrap es mejor trabajar con el CDN
+    en vez de con la versión descargada-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body>
+
+	<div class="container">
+
+		<!--Regla para iconos: Para agregar un icono lo tengo que agregar dentro de un ele-
+		mento que no tenga texto adentro, por eso para este ejemplo no lo pude agregar
+		directamente en en h1, para este ejemplo utilizamos una etiqueta span, pero también
+		se habría podido utilizar otro h1 un div, siempre y cuando esten vacios.-->
+		<h1><span class="glyphicon glyphicon-asterisk"></span>Titulo de prueba H1</h1>
+		<h2><span class="glyphicon glyphicon glyphicon-plus"></span>Titulo de prueba H2</h2>
+		<h3><span class="glyphicon glyphicon-euro"></span>Titulo de prueba H3</h3>
+		<h4><span class="glyphicon glyphicon-minus"></span>Titulo de prueba H4</h4>
+		<h5><span class="glyphicon glyphicon-cloud"></span>Titulo de prueba H5</h5>
+		<h6><span class="glyphicon glyphicon-envelope"></span>Titulo de prueba H6</h6>
+		
+		<br>
+
+		<p><span class="glyphicon-pencil"></span> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus quibusdam asperiores suscipit officiis a quis repellat quam, reprehenderit pariatur. Excepturi saepe rem provident repudiandae amet voluptatem sint harum nemo veniam. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam veniam similique nisi. Necessitatibus maiores ipsa laboriosam, maxime culpa blanditiis et tempora qui praesentium cum, voluptas sed eveniet rerum magni quidem. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed explicabo ducimus ipsam cum consequatur eius autem perferendis quam, quas perspiciatis animi voluptate odio, sequi veritatis eos harum possimus ipsa tempora.</p>
+
+		<button class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span></button>
+		<button class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Guardar</button>
+
+	</div>
+	
+
+	<script src="../bootstrap/js/jquery.js"></script> <!--Deben estar en este orden, primero jquery-->
+    <script src="../bootstrap/js/bootstrap.min.js"></script> <!--Y luego bootstrap.min.js-->
+</body>
+</html>

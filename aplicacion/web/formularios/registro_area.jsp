@@ -10,7 +10,7 @@
         <select name="codigo_centro">
             <option type="number" selected></option>
             <c:forEach items="${cent}" var="ct">
-                <option type="number" value=${ct.getCodigo()}>${ct.getNombre()} (${ct.getCodigo_regional()})</option>
+                <option type="number" value=${ct.getCodigo()}>${ct.getNombre()} (${ct.getNombreRegional()})</option>
             </c:forEach>
         </select><br><br> 
         <input type="submit" value="Insertar Area" name="boton_registro">
