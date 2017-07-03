@@ -4,6 +4,7 @@ package controladores;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -47,6 +48,11 @@ public class Prueba_Ajax_2 extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        RequestDispatcher view = request.getRequestDispatcher("prueba_ajax_2.jsp");
+
+        // Reenvia la solicitud o petición del Servlet al jsp
+        view.forward(request, response);
 
     }
 
@@ -58,9 +64,9 @@ public class Prueba_Ajax_2 extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         // Obtengo los datos de la peticion
-        String nombre = request.getParameter("nombre");
-        String apellido = request.getParameter("apellido");
-        String edad = request.getParameter("edad");
+        String nombre = request.getParameter("nombre"); // Lo que se envia desde el pos del JavaScript
+        String apellido = request.getParameter("apellido"); // Lo que se envia desde el pos del JavaScript
+        String edad = request.getParameter("edad"); // Lo que se envia desde el pos del JavaScript
 
         // Compruebo que los campos del formulario tienen datos para añadir a la tabla
         if (!nombre.equals("") && !apellido.equals("") && !edad.equals("")) {

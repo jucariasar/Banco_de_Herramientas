@@ -94,15 +94,22 @@ public class Prueba_Ajax extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         /*
+        response.setContentType("text/html; charset=iso-8859-1");
+        PrintWriter out = response.getWriter();
+        int codigo = Integer.parseInt(request.getParameter("codR"));
+        out.println("Una prueba mas " + codigo);*/
+
+        response.setContentType("text/html; charset=iso-8859-1");//
+        PrintWriter out = response.getWriter();
+
         // Lista para almacenar los centros
         List<Centro> cts = new ArrayList<>();
 
         //Lista de objetos en formato JSON para enviarle al JavaScript
         JSONArray array = new JSONArray();
 
-        int codigoR = Integer.parseInt(request.getParameter("regionales"));
+        int codigoR = Integer.parseInt(request.getParameter("codR"));
 
         try {
             //Carga el controlador de la clase
@@ -112,18 +119,19 @@ public class Prueba_Ajax extends HttpServlet {
             rowSet.setUrl(ConexionBD.URL_BASEDATOS); // Establece la URL de la base de datos
             rowSet.setUsername(ConexionBD.NOMBREUSUARIO); // Establece el nombre del usuario en la BD
             rowSet.setPassword(ConexionBD.PASSWORD); // Establece el password de la BD
-            rowSet.setCommand(("SELECT * FROM centro WHERE codigo_regional=" + codigoR));
+            rowSet.setCommand(("SELECT * FROM centro WHERE codigo_regional=" + codigoR + " ORDER BY codigo"));
             rowSet.execute(); // Ejecuta la consulta de centros de la regional seleccionada
 
             // Obtiene los datos del esquema de la tabla centros (Nombre de las columnas)
             ResultSetMetaData metaDatos = rowSet.getMetaData();
 
-            // Obtiene el numero de columnas de la tabla regional
+            // Obtiene el numero de columnas de la tabla centros
             int numeroDeColumnas = metaDatos.getColumnCount();
 
             // Recorre cada fila
             while (rowSet.next()) {
                 Centro ctemp = new Centro();
+                // Recorre las columnas
                 for (int i = 1; i <= numeroDeColumnas; i++) {
                     if (i == 1) { // optiene los datos de la primera columna en cada recorrido de filas
                         ctemp.setCodigo((int) rowSet.getObject(i)); // Establece el código en un objeto Regional
@@ -141,22 +149,17 @@ public class Prueba_Ajax extends HttpServlet {
                 array.writeJSONString(o);
             } catch (IOException e) {
                 e.printStackTrace();
-            }
-            
-            try (PrintWriter out = response.getWriter()) {
-        
+            }   
                 out.println(o);
-
-        }
-
-            //request.setAttribute("cent", cts); // pasa la lista regionales a un JSP como rgnl
-            //view = request.getRequestDispatcher("formularios/registro_usuario.jsp");
-
+                                
+            // pasa la lista regionales a un JSP como rgnl
+            //RequestDispatcher view = request.getRequestDispatcher("prueba_ajax.jsp");
+            //request.setAttribute("cent", cts);
         } catch (SQLException ex) {
             ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
-        }*/
+        }
     }
 
 }

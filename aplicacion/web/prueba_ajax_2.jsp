@@ -10,10 +10,10 @@ pageEncoding="ISO-8859-1"%>
 </head>
 <body>
 	<h2>Ejemplo de AJAX con JSP y Servelts</h2>
-	<form id="form1">
-		Nombre:<input type="text" id="nombre" /> <br>
-		Apellido: <input type="text" id="apellido" /> <br>
-		Edad: <input type="text" id="edad" /> <br>
+        <form id="form1">
+		Nombre:<input type="text" id="nombres" /> <br>
+		Apellido: <input type="text" id="apellidos" /> <br>
+		Edad: <input type="text" id="edades" /> <br>
 		<input type="button" id="submit" value="Añadir" /> 
 	</form>
 	<br>
@@ -21,7 +21,7 @@ pageEncoding="ISO-8859-1"%>
 	<div id="tabla"></div>
 
 	<script src="bootstrap/js/jquery.js"></script>
-    <script src="css/prueba_ajax.js"></script>
+    <script src="css/pruebaajax_2.js"></script>
     <script src="bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>

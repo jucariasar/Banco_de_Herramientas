@@ -61,19 +61,13 @@
                     <div class="form-group">
                         <label for="centros">Centro</label>
                         <select class="form-control" id="centros">
-                            <option type="number" value="">Seleccione un centro de formación</option>
-                            <c:if test="${not empty cent}">
-                                <c:forEach items="${cent}" var="ct">
-                                    <option type="number" value=${ct.getCodigo()}>${ct.getNombre()} (${ct.getNombreRegional()})</option>
-                                    <!--<option type="number" value=${rg.getCodigo()}>${rg.getNombre_departamento()}</option>-->
-                                </c:forEach>
-                            </c:if>
+                            <option type="number" id="encabezado1" value="">Seleccione un centro de formación</option>
                         </select>
                     </div>
                     
                     <div class="form-group">
-                        <label for="option">Area</label>
-                        <select class="form-control" id="regionales">
+                        <label for="areas">Area</label>
+                        <select class="form-control" id="areas">
                             <option type="number" value="">Seleccione un área</option>
                             <c:forEach items="${rgnl}" var="rg">
                                 <option type="number" value=${rg.getCodigo()}>${rg.getNombre_departamento()}</option>
