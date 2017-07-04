@@ -49,16 +49,15 @@ public class Login extends HttpServlet {
         // Variable de referencia para invocar posteriormente a un recurso Web
         RequestDispatcher view = null;
         
-        // Objeto ConexionBD para gestionar la comunicacion con la base de datos
-        ConexionBD conexionQuery = new ConexionBD();
         
-        // Objeto JdbcRowSet para manejar con el resultado de la consulta.
-        JdbcRowSet rowSet = new JdbcRowSetImpl();
+        
+        
         
         try {
-            // Se invoca al método conectarConsulta el cual se encarga de realizar
-            // la conexion con la BD y ejecutar la consulta que se quiera.
-            conexionQuery.conectarConsulta(rowSet, consulta);
+            // Se invoca al método statico conectarConsulta el cual se encarga de realizar
+            // la conexion con la BD y ejecutar la consulta que se quiera,
+            // Y devuelve los resultados de la consulta.
+            JdbcRowSet rowSet = ConexionBD.conectarConsulta(consulta);
 
             // Recorre las filas de la consulta
             while (rowSet.next()) {

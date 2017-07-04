@@ -34,61 +34,20 @@ public class Prueba_Ajax extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        RequestDispatcher view = null;
-
-        // Lista para almacenar las regionales
-        List<Regional> rles = new ArrayList<>();
-
         try {
-            //Carga el controlador de la clase
-            Class.forName(ConexionBD.CONTROLADOR);
-
-            // Se especifican las propiedades del objeto JdbcRowSet
-            JdbcRowSet rowSet = new JdbcRowSetImpl(); // Crea objetos rowSet para manejar las consultas
-            rowSet.setUrl(ConexionBD.URL_BASEDATOS); // Establece la URL de la base de datos
-            rowSet.setUsername(ConexionBD.NOMBREUSUARIO); // Establece el nombre del usuario en la BD
-            rowSet.setPassword(ConexionBD.PASSWORD); // Establece el password de la BD
-            rowSet.setCommand("SELECT * FROM regional ORDER BY codigo"); // Establece la consulta de regional
-            rowSet.execute(); // Ejecuta la consulta de regional
-
-            // Obtiene los datos del esquema de la tabla regional (Nombre de las columnas)
-            ResultSetMetaData metaDatos = rowSet.getMetaData();
-
-            // Obtiene el numero de columnas de la tabla regional
-            int numeroDeColumnas = metaDatos.getColumnCount();
-
-            // Recorre cada fila de la consulta de la tabla regional
-            while (rowSet.next()) {
-
-                // Crea objeto Regional temporal para despues guardarlo en el ArrayList regionales
-                Regional rtemp = new Regional();
-
-                // for para recorrer cada columna en la fila
-                for (int i = 1; i <= numeroDeColumnas; i++) {
-
-                    // Si es la primera columna
-                    if (i == 1) { // optiene los datos de la primera columna en cada recorrido de filas
-                        rtemp.setCodigo((int) rowSet.getObject(i)); // Establece el código en un objeto Regional
-                    } else { // optiene los datos de la segunda columna columna en cada recorrido de filas
-                        rtemp.setNombre_departamento((String) rowSet.getObject(i)); // Establece el nombre en un objeto Regional
-                    }
-                } // Fin del for
-                rles.add(rtemp); // Guarda el objeto creado en una lista de objetos Regional
-            } // Fin del while
-
-            // pasa la lista regionales al JSP que se invoca con el objeto RequestDispacher
-            request.setAttribute("rgnl", rles);
-
+            // Lista para almacenar las regionales
+            List<Regional> regionales = Regional.consultarRegionales();
+            request.setAttribute("rgnl", regionales);
+            // Invoca de modo directo al recurso Web registro_centro.jsp
+            RequestDispatcher view = request.getRequestDispatcher("prueba_ajax.jsp");
+            // Reenvia la solicitud o petición del Servlet al jsp
+            view.forward(request, response);
         } catch (SQLException ex) {
             ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
         }
-        // Invoca de modo directo al recurso Web registro_centro.jsp
-        view = request.getRequestDispatcher("prueba_ajax.jsp");
 
-        // Reenvia la solicitud o petición del Servlet al jsp
-        view.forward(request, response);
     }
 
     @Override
@@ -149,9 +108,9 @@ public class Prueba_Ajax extends HttpServlet {
                 array.writeJSONString(o);
             } catch (IOException e) {
                 e.printStackTrace();
-            }   
-                out.println(o);
-                                
+            }
+            out.println(o);
+
             // pasa la lista regionales a un JSP como rgnl
             //RequestDispatcher view = request.getRequestDispatcher("prueba_ajax.jsp");
             //request.setAttribute("cent", cts);

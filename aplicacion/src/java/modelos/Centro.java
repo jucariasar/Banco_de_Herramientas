@@ -65,15 +65,11 @@ public class Centro implements JSONStreamAware {
         // Lista para almacenar los centros de la base de datos.
         List<Centro> centros = new ArrayList<>();
 
-        // Objeto ConexionBD para gestionar la comunicacion con la base de datos
-        ConexionBD conexionQuery = new ConexionBD();
-
-        // Objeto JdbcRowSet para manejar con el resultado de la consulta.
-        JdbcRowSet rowSet = new JdbcRowSetImpl();
 
         // Se invoca al método conectarConsulta el cual se encarga de realizar
-        // la conexion con la BD y ejecutar la consulta que se quiera.
-        conexionQuery.conectarConsulta(rowSet, consulta);
+        // la conexion con la BD y ejecutar la consulta que se quiera,
+        // y despues devuelve el resultado de la consulta.
+        JdbcRowSet rowSet = ConexionBD.conectarConsulta(consulta);
 
         ResultSetMetaData metaDatos = rowSet.getMetaData(); // Obtine los datos del esquema de la BD
         int numeroDeColumnas = metaDatos.getColumnCount(); // Obtiene el el numero de columnas de la BD
@@ -95,37 +91,24 @@ public class Centro implements JSONStreamAware {
         return centros;
     }
 
-    public String getNombreRegional() {
+    public String getNombreRegional() 
+            throws ClassNotFoundException, SQLException {
 
         String nombreR = ""; // String para almacenar el nombre de la regional en la consulta
-        String consulta = ""; // String para almacenar la instrucción de la consulta a ejecutar
-        try {
-            //Carga el controlador de la clase
-            Class.forName(ConexionBD.CONTROLADOR);
-
-            // Almacena el string necesario para realizar la consulta
-            consulta = "SELECT nombre_departamento FROM regional WHERE codigo=" + this.getCodigo_regional();
-
-            // Se especifican las propiedades del objeto JdbcRowSet
-            JdbcRowSet rowSet = new JdbcRowSetImpl(); // Crea objetos rowSet para manejar las consultas
-            rowSet.setUrl(ConexionBD.URL_BASEDATOS); // Establece la URL de la base de datos
-            rowSet.setUsername(ConexionBD.NOMBREUSUARIO); // Establece el nombre del usuario en la BD
-            rowSet.setPassword(ConexionBD.PASSWORD); // Establece el password de la BD
-            rowSet.setCommand(consulta); // Establece la consulta de regional
-            rowSet.execute(); // Ejecuta la consulta de regional
-
-            if (rowSet.next()) {
+        
+        // String para almacenar la instrucción de la consulta a ejecutar
+        String consulta = "SELECT nombre_departamento FROM regional WHERE codigo=" + this.getCodigo_regional(); 
+        
+        // Se invoca al método conectarConsulta el cual se encarga de realizar
+        // la conexion con la BD y ejecutar la consulta enviada, 
+        // y despues devuelve el resultado de la consulta.
+        JdbcRowSet rowSet = ConexionBD.conectarConsulta(consulta);      
+        
+            if (rowSet.next()) 
                 nombreR = (String) rowSet.getObject(1);
-            }
-
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return "Consulta no encontrada";
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
-            return "Error en la conexion en la BD";
-        }
-
+            else
+                return "Consulta no encontrada";
+                    
         return nombreR;
     }
 

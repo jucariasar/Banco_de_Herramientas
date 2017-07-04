@@ -47,20 +47,16 @@ public class Regional {
             throws ClassNotFoundException, SQLException {
 
         //String para realizar la consulta en la Base de Datos
-        String consulta = "SELECT * FROM regional";
+        String consulta = "SELECT * FROM regional ORDER BY codigo";
 
         // Lista de objetos regional que se asocian a cada centro
         List<Regional> regionales = new ArrayList<>();
 
-        // Objeto ConexionBD para gestionar la comunicacion con la base de datos
-        ConexionBD conexionQuery = new ConexionBD();
-
-        // Objeto JdbcRowSet para manejar con el resultado de la consulta.
-        JdbcRowSet rowSet = new JdbcRowSetImpl();
-
+   
         // Se invoca al método conectarConsulta el cual se encarga de realizar
-        // la conexion con la BD y ejecutar la consulta que se quiera.
-        conexionQuery.conectarConsulta(rowSet, consulta);
+        // la conexion con la BD y ejecutar la consulta enviada, 
+        // y despues devuelve el resultado de la consulta.
+        JdbcRowSet rowSet = ConexionBD.conectarConsulta(consulta);
 
         // Obtiene los datos del esquema de la BD (Nombre de las columnas)
         ResultSetMetaData metaDatos = rowSet.getMetaData();

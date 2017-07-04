@@ -12,7 +12,7 @@
 
         <b>Seleccione una Regional:</b>
         <select name="codigo_regional">
-            <option type="number" selected></option>
+            <option type="number" disabled>Seleccione una regional</option>
             <c:forEach items="${rgnl}" var="rg">
                 <option type="number" value=${rg.getCodigo()}>${rg.getNombre_departamento()}</option>
             </c:forEach>
