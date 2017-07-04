@@ -56,6 +56,45 @@ public class Centro implements JSONStreamAware {
         this.codigo_regional = codigo_regional;
     }
 
+    public static List<Centro> consultarCentros()
+            throws ClassNotFoundException, SQLException {
+
+        // String para enviar como consulta a la base de datos.
+        String consulta = "SELECT * FROM centro ORDER BY codigo_regional";
+
+        // Lista para almacenar los centros de la base de datos.
+        List<Centro> centros = new ArrayList<>();
+
+        // Objeto ConexionBD para gestionar la comunicacion con la base de datos
+        ConexionBD conexionQuery = new ConexionBD();
+
+        // Objeto JdbcRowSet para manejar con el resultado de la consulta.
+        JdbcRowSet rowSet = new JdbcRowSetImpl();
+
+        // Se invoca al método conectarConsulta el cual se encarga de realizar
+        // la conexion con la BD y ejecutar la consulta que se quiera.
+        conexionQuery.conectarConsulta(rowSet, consulta);
+
+        ResultSetMetaData metaDatos = rowSet.getMetaData(); // Obtine los datos del esquema de la BD
+        int numeroDeColumnas = metaDatos.getColumnCount(); // Obtiene el el numero de columnas de la BD
+
+        while (rowSet.next()) {
+            Centro ctemp = new Centro();
+            for (int i = 1; i <= numeroDeColumnas; i++) {
+                if (i == 1) { // optiene los datos de la primera columna en cada recorrido de filas
+                    ctemp.setCodigo((int) rowSet.getObject(i)); // Establece el código en un objeto Regional
+                } else if (i == 2) { // optiene los datos de la segunda columna columna en cada recorrido de filas
+                    ctemp.setNombre((String) rowSet.getObject(i)); // Establece el nombre en un objeto Regional
+                } else {
+                    ctemp.setCodigo_regional((int) rowSet.getObject(i));
+                }
+            }
+            centros.add(ctemp); // Guarda el objeto creado en una lista de objetos Regional
+        }
+
+        return centros;
+    }
+
     public String getNombreRegional() {
 
         String nombreR = ""; // String para almacenar el nombre de la regional en la consulta

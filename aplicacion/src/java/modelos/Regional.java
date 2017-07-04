@@ -46,7 +46,7 @@ public class Regional {
     public static List<Regional> consultarRegionales() 
             throws ClassNotFoundException, SQLException {
 
-        //Consulta para hacer en la Base de Datos
+        //String para realizar la consulta en la Base de Datos
         String consulta = "SELECT * FROM regional";
 
         // Lista de objetos regional que se asocian a cada centro

@@ -60,139 +60,29 @@ public class Registro extends HttpServlet {
                     ex.printStackTrace();
                 } catch (ClassNotFoundException ex) {
                     ex.printStackTrace();
-                } 
+                }
 
                 break;
-            case 3: // Caso 3 Registrar Area
-
-                // ArrayList de Centros para almacenar los centros actualmente en la BD
-                List<Centro> centros = new ArrayList<>();
-
+            case 3: // Caso 3 Registrar Area           
                 try {
-                    Class.forName(ConexionBD.CONTROLADOR); //Carga el controlador a la clase
-
-                    // Se especifican las propiedades del objeto JdbcRowSet
-                    JdbcRowSet rowSet = new JdbcRowSetImpl();
-                    rowSet.setUrl(ConexionBD.URL_BASEDATOS); // Establece la URL de la base de datos
-                    rowSet.setUsername(ConexionBD.NOMBREUSUARIO); // Establece el nombre del usuario en la BD
-                    rowSet.setPassword(ConexionBD.PASSWORD); // Establece el password de la BD
-                    rowSet.setCommand("SELECT * FROM centro ORDER BY codigo_regional"); // Establece la consulta
-                    rowSet.execute(); // Ejecuta la consulta
-
-                    ResultSetMetaData metaDatos = rowSet.getMetaData(); // Obtine los datos del esquema de la BD
-                    int numeroDeColumnas = metaDatos.getColumnCount(); // Obtiene el el numero de columnas de la BD
-
-                    // Recorre cada fila
-                    while (rowSet.next()) {
-                        Centro ctemp = new Centro();
-                        for (int i = 1; i <= numeroDeColumnas; i++) {
-                            if (i == 1) { // optiene los datos de la primera columna en cada recorrido de filas
-                                ctemp.setCodigo((int) rowSet.getObject(i)); // Establece el código en un objeto Regional
-                            } else if (i == 2) { // optiene los datos de la segunda columna columna en cada recorrido de filas
-                                ctemp.setNombre((String) rowSet.getObject(i)); // Establece el nombre en un objeto Regional
-                            } else {
-                                ctemp.setCodigo_regional((int) rowSet.getObject(i));
-                            }
-                        }
-                        centros.add(ctemp); // Guarda el objeto creado en una lista de objetos Regional
-                    }
-                    request.setAttribute("cent", centros); // pasa la lista regionales a un JSP como rgnl
-
+                    // Obtine la lista de centros en la BD
+                    List<Centro> centros = Centro.consultarCentros();
+                    
+                    // Establece el atributo "cent" con la lista de centros, dicho atributo se pasará 
+                    // con el objeto request, del Servlet al JSP mediante el objeto view con el método
+                    // forward(request, response), que previamente obtuvo el jsp que se invocara mediante
+                    // el llamado de request.getRequestDispatcher("formularios/registro_area.jsp");              // Renvia la solicitud o petición del Servlet al JSP (Para que se desplegue la vista registro_regional.jsp)
+                    request.setAttribute("cent", centros);
+                    view = request.getRequestDispatcher("formularios/registro_area.jsp");
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 } catch (ClassNotFoundException ex) {
                     ex.printStackTrace();
-                } finally {
-                    view = request.getRequestDispatcher("formularios/registro_area.jsp");
                 }
                 break;
             case 4: // Caso 4 registrar usuario
 
-                // Lista para almacenar las regionales
-                List<Regional> rles = new ArrayList<>();
-
-                // Lista para almacenar los centros
-                List<Centro> cts = new ArrayList<>();
-
-                try {
-                    //Carga el controlador de la clase
-                    Class.forName(ConexionBD.CONTROLADOR);
-
-                    // Se especifican las propiedades del objeto JdbcRowSet
-                    JdbcRowSet rowSet = new JdbcRowSetImpl(); // Crea objetos rowSet para manejar las consultas
-                    rowSet.setUrl(ConexionBD.URL_BASEDATOS); // Establece la URL de la base de datos
-                    rowSet.setUsername(ConexionBD.NOMBREUSUARIO); // Establece el nombre del usuario en la BD
-                    rowSet.setPassword(ConexionBD.PASSWORD); // Establece el password de la BD
-                    rowSet.setCommand("SELECT * FROM regional ORDER BY codigo"); // Establece la consulta de regional
-                    rowSet.execute(); // Ejecuta la consulta de regional
-
-                    // Obtiene los datos del esquema de la tabla regional (Nombre de las columnas)
-                    ResultSetMetaData metaDatos = rowSet.getMetaData();
-
-                    // Obtiene el numero de columnas de la tabla regional
-                    int numeroDeColumnas = metaDatos.getColumnCount();
-
-                    // Recorre cada fila de la consulta de la tabla regional
-                    while (rowSet.next()) {
-
-                        // Crea objeto Regional temporal para despues guardarlo en el ArrayList regionales
-                        Regional rtemp = new Regional();
-
-                        // for para recorrer cada columna en la fila
-                        for (int i = 1; i <= numeroDeColumnas; i++) {
-
-                            // Si es la primera columna
-                            if (i == 1) { // optiene los datos de la primera columna en cada recorrido de filas
-                                rtemp.setCodigo((int) rowSet.getObject(i)); // Establece el código en un objeto Regional
-                            } else { // optiene los datos de la segunda columna columna en cada recorrido de filas
-                                rtemp.setNombre_departamento((String) rowSet.getObject(i)); // Establece el nombre en un objeto Regional
-                            }
-                        } // Fin del for
-                        rles.add(rtemp); // Guarda el objeto creado en una lista de objetos Regional
-                    } // Fin del while
-
-                    // pasa la lista regionales al JSP que se invoca con el objeto RequestDispacher
-                    request.setAttribute("rgnl", rles);
-
-                    /*
-                    int codigoR;
-                    codigoR = Integer.parseInt(request.getParameter("codigo_regional"));
-                    
-                    // Establece la consulta de los centros asociados a la regional seleccionada
-                    rowSet.setCommand(("SELECT * FROM centro WHERE codigo_regional=" + codigoR));
-                    rowSet.execute(); // Ejecuta la consulta de centros de la regional seleccionada
-
-                    // Obtiene los datos del esquema de la tabla centros (Nombre de las columnas)
-                    metaDatos = rowSet.getMetaData();
-
-                    // Obtiene el el numero de columnas de la tabla centro
-                    numeroDeColumnas = metaDatos.getColumnCount();
-
-                    // Recorre cada fila
-                    while (rowSet.next()) {
-                        Centro ctemp = new Centro();
-                        for (int i = 1; i <= numeroDeColumnas; i++) {
-                            if (i == 1) { // optiene los datos de la primera columna en cada recorrido de filas
-                                ctemp.setCodigo((int) rowSet.getObject(i)); // Establece el código en un objeto Regional
-                            } else if (i == 2) { // optiene los datos de la segunda columna columna en cada recorrido de filas
-                                ctemp.setNombre((String) rowSet.getObject(i)); // Establece el nombre en un objeto Regional
-                            } else {
-                                ctemp.setCodigo_regional((int) rowSet.getObject(i));
-                            }
-                        }
-                        cts.add(ctemp); // Guarda el objeto creado en una lista de objetos Regional
-                    }
-                    request.setAttribute("cent", cts); // pasa la lista regionales a un JSP como rgnl
-                    //view = request.getRequestDispatcher("formularios/registro_usuario.jsp");
-                     */
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                } catch (ClassNotFoundException ex) {
-                    ex.printStackTrace();
-                } finally {
-                    // Invoca de modo directo al recurso Web registro_centro.jsp
-                    view = request.getRequestDispatcher("formularios/registro_usuario.jsp");
-                }
+                view = request.getRequestDispatcher("formularios/registro_usuario.jsp");
 
                 break;
             default:
@@ -209,7 +99,7 @@ public class Registro extends HttpServlet {
             throws ServletException, IOException {
 
         // Obtiene el valor (value) de la petición del objeto llamado boton_registro y la
-        // alamcena en el objeto String opcion
+        // almacena en el objeto String opcion
         String opcion = request.getParameter("boton_registro");
 
         // Si el valor de "opcion" es "Insertar Regional" procede a insertar los dados de la regional
@@ -236,9 +126,8 @@ public class Registro extends HttpServlet {
 
                 // Maneja una instrucción de inserccion en la base de datos
                 instruccion = conexion.prepareStatement("INSERT INTO regional "
-                        + "(codigo, nombre_departamento) "
-                        + "VALUES (?, ?)");
-
+                        + "VALUES(?, ?)");
+                        
                 instruccion.setInt(1, codigo); // Inserta dato de tipo int en el primer ? de instruccion
                 instruccion.setString(2, nombre); // Inserta dato de tipo String en el segundo ? de instruccion
                 resultado = instruccion.executeUpdate(); // Ejecuta la instrucción y devuelve cuantas filas fueron
