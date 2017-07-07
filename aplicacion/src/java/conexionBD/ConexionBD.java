@@ -1,6 +1,8 @@
 package conexionBD;
 
 import com.sun.rowset.JdbcRowSetImpl;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import javax.sql.rowset.JdbcRowSet;
 
@@ -27,7 +29,13 @@ public class ConexionBD {
         return rowSet;
     }
     
-    public static void ConectarRegistro(){
-    
+    public static Connection ConectarRegistro() 
+            throws SQLException{
+       
+        // Conexion a la base de datos mediante los respectivos parametros
+        // de direccion, usuario y contraseña
+        Connection conexion = DriverManager.getConnection(URL_BASEDATOS, NOMBREUSUARIO, PASSWORD);
+                
+        return conexion;
     }
 }

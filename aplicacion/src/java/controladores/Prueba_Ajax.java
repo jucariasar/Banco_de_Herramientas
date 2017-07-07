@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.rowset.JdbcRowSet;
+import modelos.Area;
 import modelos.Centro;
 import modelos.Regional;
 import org.json.simple.JSONArray;
@@ -31,17 +32,21 @@ import org.json.simple.JSONArray;
 public class Prueba_Ajax extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest solicitud, HttpServletResponse respuesta)
             throws ServletException, IOException {
 
         try {
             // Lista para almacenar las regionales
             List<Regional> regionales = Regional.consultarRegionales();
-            request.setAttribute("rgnl", regionales);
+
+            // Establebe una variable para enviar al JSP con la lista de regionales
+            solicitud.setAttribute("rgnl", regionales);
+
             // Invoca de modo directo al recurso Web registro_centro.jsp
-            RequestDispatcher view = request.getRequestDispatcher("prueba_ajax.jsp");
+            RequestDispatcher view = solicitud.getRequestDispatcher("prueba_ajax.jsp");
+
             // Reenvia la solicitud o petición del Servlet al jsp
-            view.forward(request, response);
+            view.forward(solicitud, respuesta);
         } catch (SQLException ex) {
             ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
@@ -59,65 +64,103 @@ public class Prueba_Ajax extends HttpServlet {
         int codigo = Integer.parseInt(request.getParameter("codR"));
         out.println("Una prueba mas " + codigo);*/
 
-        response.setContentType("text/html; charset=iso-8859-1");//
+        response.setContentType("text/html; charset=UTF-8");//
         PrintWriter out = response.getWriter();
-
-        // Lista para almacenar los centros
-        List<Centro> cts = new ArrayList<>();
 
         //Lista de objetos en formato JSON para enviarle al JavaScript
         JSONArray array = new JSONArray();
 
-        int codigoR = Integer.parseInt(request.getParameter("codR"));
+        int opt = Integer.parseInt(request.getParameter("opcion"));
 
-        try {
-            //Carga el controlador de la clase
-            Class.forName(ConexionBD.CONTROLADOR);
+        if (opt == 1) {
+            int codigoR = Integer.parseInt(request.getParameter("codR"));
 
-            JdbcRowSet rowSet = new JdbcRowSetImpl(); // Crea objetos rowSet para manejar las consultas
-            rowSet.setUrl(ConexionBD.URL_BASEDATOS); // Establece la URL de la base de datos
-            rowSet.setUsername(ConexionBD.NOMBREUSUARIO); // Establece el nombre del usuario en la BD
-            rowSet.setPassword(ConexionBD.PASSWORD); // Establece el password de la BD
-            rowSet.setCommand(("SELECT * FROM centro WHERE codigo_regional=" + codigoR + " ORDER BY codigo"));
-            rowSet.execute(); // Ejecuta la consulta de centros de la regional seleccionada
-
-            // Obtiene los datos del esquema de la tabla centros (Nombre de las columnas)
-            ResultSetMetaData metaDatos = rowSet.getMetaData();
-
-            // Obtiene el numero de columnas de la tabla centros
-            int numeroDeColumnas = metaDatos.getColumnCount();
-
-            // Recorre cada fila
-            while (rowSet.next()) {
-                Centro ctemp = new Centro();
-                // Recorre las columnas
-                for (int i = 1; i <= numeroDeColumnas; i++) {
-                    if (i == 1) { // optiene los datos de la primera columna en cada recorrido de filas
-                        ctemp.setCodigo((int) rowSet.getObject(i)); // Establece el código en un objeto Regional
-                    } else if (i == 2) { // optiene los datos de la segunda columna columna en cada recorrido de filas
-                        ctemp.setNombre((String) rowSet.getObject(i)); // Establece el nombre en un objeto Regional
-                    } else {
-                        ctemp.setCodigo_regional((int) rowSet.getObject(i));
-                    }
-                }
-                array.add(ctemp);
-                //cts.add(ctemp); // Guarda el objeto creado en una lista de objetos Regional
-            }
-            StringWriter o = new StringWriter();
+            String consulta = "SELECT * FROM centro WHERE codigo_regional=" + codigoR + " ORDER BY codigo";
+            System.out.printf("%d", codigoR);
             try {
-                array.writeJSONString(o);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            out.println(o);
+                // Ejecuta la consulta con el String consulta
+                JdbcRowSet rowSet = ConexionBD.conectarConsulta(consulta);
 
-            // pasa la lista regionales a un JSP como rgnl
-            //RequestDispatcher view = request.getRequestDispatcher("prueba_ajax.jsp");
-            //request.setAttribute("cent", cts);
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
+                // Obtiene los datos del esquema de la tabla centros (Nombre de las columnas)
+                ResultSetMetaData metaDatos = rowSet.getMetaData();
+
+                // Obtiene el numero de columnas de la tabla centros
+                int numeroDeColumnas = metaDatos.getColumnCount();
+
+                // Recorre cada fila
+                while (rowSet.next()) {
+                    Centro ctemp = new Centro();
+                    // Recorre las columnas
+                    for (int i = 1; i <= numeroDeColumnas; i++) {
+                        if (i == 1) { // optiene los datos de la primera columna en cada recorrido de filas
+                            ctemp.setCodigo((int) rowSet.getObject(i)); // Establece el código en un objeto Regional
+                        } else if (i == 2) { // optiene los datos de la segunda columna columna en cada recorrido de filas
+                            ctemp.setNombre((String) rowSet.getObject(i)); // Establece el nombre en un objeto Regional
+                        } else {
+                            ctemp.setCodigo_regional((int) rowSet.getObject(i));
+                        }
+                    }
+                    array.add(ctemp);
+                }
+
+                StringWriter o = new StringWriter();
+                try {
+                    array.writeJSONString(o);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                out.println(o);
+
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Prueba_Ajax.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(Prueba_Ajax.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else if(opt == 2){
+            
+            int codigoC = Integer.parseInt(request.getParameter("codC"));
+
+            String consulta = "SELECT * FROM area WHERE codigo_centro=" + codigoC + " ORDER BY codigo_centro";
+            System.out.print(codigoC);
+            try {
+                // Ejecuta la consulta con el String consulta
+                JdbcRowSet rowSet = ConexionBD.conectarConsulta(consulta);
+                
+                // Obtiene los datos del esquema de la tabla centros (Nombre de las columnas)
+                ResultSetMetaData metaDatos = rowSet.getMetaData();
+                
+                // Obtiene el numero de columnas de la tabla areas
+                int numeroDeColumnas = metaDatos.getColumnCount();
+                
+                // Recorre cada fila
+                while (rowSet.next()) {
+                    Area atemp = new Area();
+                    
+                    // Recorre las columnas
+                    for (int i = 1; i <= numeroDeColumnas; i++) {
+                        if (i == 1) { // optiene los datos de la primera columna en cada recorrido de filas
+                            atemp.setNombre((String) rowSet.getObject(i)); // Establece el código en un objeto Regional
+                        } else {
+                            atemp.setCodigo_centro((int) rowSet.getObject(i));
+                        }
+                    }
+                    array.add(atemp);
+                }
+                StringWriter o = new StringWriter();
+                try {
+                    array.writeJSONString(o);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                out.println(o);
+                
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Prueba_Ajax.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(Prueba_Ajax.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            
         }
     }
 

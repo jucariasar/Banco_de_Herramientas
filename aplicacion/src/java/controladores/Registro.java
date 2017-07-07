@@ -104,26 +104,25 @@ public class Registro extends HttpServlet {
 
         // Si el valor de "opcion" es "Insertar Regional" procede a insertar los dados de la regional
         if (opcion.equals("Insertar Regional")) {
+            
             // Obtiene el parametro "codigo" del JSP
             int codigo = Integer.parseInt(request.getParameter("codigo"));
 
             // Obtiene el parametro "nombre" del JSP
             String nombre = request.getParameter("nombre");
-
+            Connection conexion = null;
             int resultado = 0; // Para guardar la cantidad de filas que se modificaron en la inserccion 
-            Connection conexion = null; // Para manejar la conexion a la base de datos
+            
             PreparedStatement instruccion = null; // Maneja la instruccion  de inserccion de SQL
-
+            
             try {
+                
                 // Carga el controlador de la base de datos
                 Class.forName(ConexionBD.CONTROLADOR);
-
-                // Conexion a la base de datos mediante los respectivos parametros
-                // de direccion, usuario y contraseña
-                conexion
-                        = DriverManager.getConnection(ConexionBD.URL_BASEDATOS,
-                                ConexionBD.NOMBREUSUARIO, ConexionBD.PASSWORD);
-
+                
+                // Para manejar la conexion a la base de datos
+                conexion = ConexionBD.ConectarRegistro();
+                
                 // Maneja una instrucción de inserccion en la base de datos
                 instruccion = conexion.prepareStatement("INSERT INTO regional "
                         + "VALUES(?, ?)");

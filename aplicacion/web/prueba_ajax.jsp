@@ -61,24 +61,17 @@
                     <div class="form-group">
                         <label for="centros">Centro</label>
                         <select class="form-control" id="centros">
-                            <option type="number" id="encabezado1" value="">Seleccione un centro de formación</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="areas">Area</label>
-                        <select class="form-control" id="areas">
-                            <option type="number" value="">Seleccione un área</option>
-                            <c:forEach items="${rgnl}" var="rg">
-                                <option type="number" value=${rg.getCodigo()}>${rg.getNombre_departamento()}</option>
-                            </c:forEach>
+                            <option type="number" value="">Seleccione un centro de formación</option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="valorselect">Valor del select</label>
-                        <input class="form-control" id="valorselect" type="text">
+                        <label for="areas">Area</label>
+                        <select class="form-control" id="areas">
+                            <option type="number" value="">Seleccione un área</option>
+                        </select>
                     </div>
+
 
                     <input type="submit" value="Registrar Usuario" name="boton_registro">
 
