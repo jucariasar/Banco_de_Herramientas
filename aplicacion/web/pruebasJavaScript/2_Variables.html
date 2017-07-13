@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Variables</title>
+</head>
+<body>
+	<script>
+		var nombre = "Juan Camilo";
+
+		// La funcion prompt nos permite almacenar un texto de un valor.
+		// Se puede omitir el segundo parametro para la función prompt para
+		// que no aparezca en la pantalla la parabra del segundo parametro.
+		nombre = prompt("Ingresa tu nombre", "Valor");
+
+		alert(nombre);
+
+		// Otra forma de mostrar en pantalla es con la siguiente función, en ese caso
+		// se mostrara dentro del documento.
+		document.write(nombre);
+
+		// Con la siguiente función tambien se podria mostrar, pero en la consola, por lo
+		// tanto para visualizarlo te tocaria abrir la consola del navegado o el inspector
+		// de elementos.
+		console.log(nombre);
+
+
+		// Esto nos manda una alerta en pantalla
+		//alert(nombre);
+	</script>
+
+<!-- La palabrea reservada para declarar variables "var" se puede omitir cuando se
+va a declarar una variable, pero se debe de tener en cuenta que si se omite esa
+palabra la variable quedara como variable global, por lo cual normalmente se recomienda
+declara la mayoria de veces con var -->
+
+</body>
+</html>

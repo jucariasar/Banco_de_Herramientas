@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Métodos y propiedades para los arreglos</title>
+</head>
+<body>
+	
+	<script>
+		
+		var amigos = ["Luis", "Jairo", "Albeiro", "Carlos"];
+
+		// ::::::: Conocer la longitud de un arreglo (propiedad length). :::::::
+		tamanio = amigos.length;
+
+		// Descomentar si quiere comprobar las pruebas
+		// document.write("Tienes " + tamanio + " amigos");
+
+
+		// ::::::: Ir a la siguiente posición de un arreglo para agregar otro elemento
+		amigos[amigos.length] = "Fernando";
+		amigos[amigos.length] = "Juan";
+
+		// Descomentar si quiere comprobar las pruebas
+		// document.write(amigos);
+
+
+		// ::::::: Otra forma de agregar elementos al final :::::::
+		// Otra forma aun mas rápida de agregar elementos a un arrego es mediante 
+		// el método push(). // Se puede de a uno, o varios de una vez.
+		// Los elementos se agregan al final.
+		amigos.push("German", "Gerson", "Oscar");
+
+		// Descomentar si quiere comprobar las pruebas
+		// document.write(amigos);
+
+
+		// ::::::: Eliminar elemento del final :::::::
+		// Como se pueden agregar elementos a la última posición del arreglo
+		// con el método push(), mediante el método pop() elimino el último del
+		// arreglo.
+		amigos.pop();
+
+		// Descomentar si quiere comprobar las pruebas
+		//document.write(amigos);
+
+
+		//  ::::::: Contatenar arreglos (pegar) :::::::
+		var amigos2 = ["Héctor", "Franz"];
+
+		// Se concatena mediante el método concat();
+		var amigos3 = amigos.concat(amigos2);
+
+		// Descomentar si quiere comprobar las pruebas
+		// document.write(amigos3);
+
+
+		// ::::::: Hacer Join a arreglos mediante método join() :::::::
+
+		// Descomentar si quiere comprobar las pruebas
+		// document.write(amigos.join(" : "));
+
+		amigos4 = amigos.join(" : ");
+
+		// Descomentar si quiere comprobar las pruebas
+		//document.write(amigos4);
+
+
+		// ::::::: Ordenar los elementos de un arreglo :::::::
+
+		var ordenados = amigos.sort();
+
+		// Descomentar si quiere comprobar las pruebas
+		// document.write(ordenados);
+
+
+		// En JavaScript existen muchos métodos para funciones especificas, es recomendable
+		// consultar los diferentes métodos que existen, para tener conocimiento de ellos
+		// a la hora de dar soluciones a algunos problemas.
+
+	</script>
+
+</body>
+</html>

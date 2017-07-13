@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Modificando, Remplazando y Eliminando Nodos del DOM</title>
+</head>
+<body>
+
+	<ol>
+		<li id ="primero">Lorem ipsum dolor sit amet.</li>
+		<li>Lorem ipsum dolor sit amet, consectetur.</li>
+	</ol>
+
+	<script>
+
+	// ::::::::::::: Modificar nodos del DOM :::::::::::::
+
+		// var primerElemento = document.getElementById("primero");
+		// primerElemento.innerHTML = "Nuevo Texto <i class=\"foo\">FalconMaster</i>";
+		
+		// Otra forma de hacerlo, la diferencia es que innerHTML
+		// puede ejecutar código HTML en el navegador, mientras que textContent NO.
+		// Descomentar si se quiere ver prueba
+		// primerElemento.textContent = "Nuevo Texto <i>FalconMaster</i>";
+
+
+	// ::::::::::::: Reemplazar nodos del DOM :::::::::::::
+	/*
+	var elemento = document.createElement("li"),
+		contenido = document.createTextNode("Nuevo texto");
+
+	elemento.appendChild(contenido);
+
+	var padre = document.getElementsByTagName("li")[0].parentNode,
+		referencia = document.getElementsByTagName("li")[0];
+	*/
+	// El método replaceChild recibe dos parametros, 1 elemento que queremos agregar
+	// 2 el elemento que queremos eliminar.
+	//padre.replaceChild(elemento, referencia);
+
+
+	// ::::::::::::: Eliminar nodos del DOM :::::::::::::
+
+	var elemento = document.createElement("li"),
+		contenido = document.createTextNode("Nuevo texto");
+
+	var padre = document.getElementsByTagName("li")[0].parentNode,
+		referencia = document.getElementsByTagName("li")[0];
+
+	// El método removeChild() recibe un parámetro que es el elemento que queremos eliminar
+	padre.removeChild(referencia);
+
+	</script>
+	
+</body>
+</html>

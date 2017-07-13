@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Tipos de Datos</title>
+</head>
+<body>
+
+	<script>
+	
+		// Los errores de JavaScript se pueden ver desde la consola del navegador.
+
+		// Tipos de datos
+
+			// ::::::::: Numerico :::::::::
+
+				var edad = 19;
+				var estatura = 1.75;
+
+
+			// ::::::::: String - Cadena de Texto :::::::::
+
+				var nombre = "Camilo";
+				var apellido = "Arias";
+
+				// Para agregar comillas dobles dentro de un texto
+				var texto = "Los mejores videos son de \"FalconMaster\"";
+
+				// o agregando comillas simples dentro de las comillas dobles
+				// o al contrario (comillas dobles dentro de las comillas simples)
+				// también se puede.
+				var texto2 = "Los mejores videos son de 'FalconMaster'";
+
+				// Descomentar si quieren hacer pruebas con los String
+				//document.write(nombre + " " + apellido);
+
+
+			// ::::::::: Array - Arreglo :::::::::
+
+				var amigos = ["Luis", "Jairo", "Albeiro", 19, true];
+
+				// Descomentar si quieren hacer pruebas con el arreglo
+				//document.write(amigos[0] + " " + amigos[3]);
+
+
+			// ::::::::: Object - Objeto :::::::::
+
+			var objeto = {
+				color: "Black",
+				size: 12
+			};
+
+
+			// ::::::::: Boolean - Boleano :::::::::
+
+				var estado = true;
+				var estado2 = false;
+
+
+			// ::::::::: Undefined :::::::::
+
+				// Como su nombre lo dice es un tipo de dato para valores que no hemos
+				// definido.
+				var unde;
+
+				// Descomentar si se quieren hacer pruebas con los Undefined
+				// document.write(unde);
+
+
+			// ::::::::: Null :::::::::
+
+				// Sirve si se quiere borrar un valor de la varible, se debe de
+				// establecer en null
+
+				var numero2 = 10;
+
+				// Si en algun momento se quiere borrar el valor que hay en la variable
+				// debemos hacerla igual a null (nulificarla), así:
+				numero2 = null;
+
+
+			// ::::::::: NaN :::::::::
+
+				// Para valores invalidos
+				var texto2 = "Hola como estas";
+				document.write( texto2 * 2); // Operación invalida para texto, mostaria NaN
+	</script>
+	
+</body>
+</html>

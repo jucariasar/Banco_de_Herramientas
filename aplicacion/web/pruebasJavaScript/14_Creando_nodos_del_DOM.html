@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document Object Model</title>
+</head>
+<body>
+	<h1 id="titulo">Titulo de nuestro sitio web</h1>
+	<div id="subtitulo"></div>
+	<p>1.- Lorem ipsum <b>dolor</b> sit amet, consectetur adipisicing elit. Quod, rerum molestias, asperiores libero ratione similique, animi accusantium neque quasi eius, consequatur maxime voluptatibus omnis repellat ipsa porro sint unde dolor.</p>
+
+	<p id="segundo">2.- Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi quos incidunt fuga similique libero facere quas, labore blanditiis totam laudantium. Maxime incidunt quos eaque delectus libero dignissimos, ad doloribus odit.</p>
+
+	<p>3.- Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis illum fugiat, odio fuga quisquam, adipisci magnam architecto tenetur error voluptatum possimus quam, amet accusamus sint temporibus maxime minus molestiae ipsum.</p>
+
+	<script>
+
+		// 1.- Crear el elemento.
+		var elemento = document.createElement("h2");
+
+		// 2.- Crear un nodo de texto.
+		var contenido = document.createTextNode("Este es nuestro titular");
+
+		// 3.- Añadir el nodo de texto al elemento.
+		elemento.appendChild(contenido);
+
+		// 4.- Agregar atributos al elemento.
+		elemento.setAttribute("align", "center");
+
+		// 5.- Agregar el elemento al documento.
+		document.getElementById("subtitulo").appendChild(elemento);
+
+		// Si hubieramos querido agregar el elemento al final del documento bastarioa
+		// con una instrucción como:
+		// document.body.appendChild(elemento);
+
+	</script>
+</body>
+</html>

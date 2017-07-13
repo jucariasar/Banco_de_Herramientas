@@ -8,7 +8,7 @@
         <b>Nombre del Área:</b><input type="text" name="nombre" required><br><br>
         <b>Seleccione un Centro:</b>
         <select name="codigo_centro">
-            <option type="number" selected></option>
+            <option type="number" value="">Seleccione un Centro</option>
             <c:forEach items="${cent}" var="ct">
                 <option type="number" value=${ct.getCodigo()}>${ct.getNombre()} (${ct.getNombreRegional()})</option>
             </c:forEach>

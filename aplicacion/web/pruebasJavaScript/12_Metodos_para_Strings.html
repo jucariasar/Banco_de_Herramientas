@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Métodos para cadenas de texto</title>
+</head>
+<body>
+	<script>
+		
+	// :::::::: Obtener el tamaño de una cadena con la propiedad length ::::::::
+	var texto = "Juan Camilo";
+	var nuevoTexto = texto.length;
+
+	// Descomentar si se quiere ver la prueba
+	// document.write(nuevoTexto);
+
+
+	// :::::::: Cortar una cadena de texto con el método substring() ::::::::
+
+	// Con un parametro permite cortar la cadena a partir de una posición
+
+	// muestra el texto despues del tercer caracter
+	nuevoTexto = texto.substring(3);
+
+	// Descomentar si se quiere ver la prueba
+	// document.write(nuevoTexto);
+
+	// Con dos parametros lo que dice es desde donde y hasta donde va a cortar
+	// el texto
+
+	nuevoTexto2 = texto.substring(0, 4);
+
+	// Descomentar si se quiere ver la prueba
+	// document.write(nuevoTexto2);
+
+
+	// :::::::: Posición de una letra en especifico ::::::::
+
+	// Se utiliza el método indexOf()
+
+
+	// En que posición se encuentra la letra a en texto (cuenta desde la posición cero)
+	// Cabe destacar que se diferencia entre mayúsculas y minusculas.
+	var posicion = texto.indexOf("a");
+	
+	// Descomentar si se quiere ver la prueba
+	// document.write(posicion);
+
+	// indexOf() con dos paramétros se le puede indicar a partir de donde se quiere que
+	// empiece a buscar.
+	posicion = texto.indexOf("a", 5);
+
+	// Descomentar si se quiere ver la prueba
+	// document.write(posicion);
+
+
+	// también existe el método lastIndexOf() que empieza a buscar desde el último lugar
+	// hace el primero.
+	posicion = texto.lastIndexOf("a");
+
+	// Descomentar si se quiere ver la prueba
+	// document.write(posicion);
+
+
+	// :::::::: Remplazar una cadena de texto por otra ::::::::
+
+	var nuevoTexto3 = texto.replace("Camilo", "Milo");
+
+	// Descomentar si se quiere ver la prueba
+	// document.write(nuevoTexto3);	
+	
+
+	// :::::::: Remplazar una cadena de texto por otra ::::::::
+
+	// Convertir texto a Mayusculas o minusculas
+
+	var nuevoTexto4 = texto.toUpperCase();
+	var nuevoTexto5 = texto.toLowerCase();
+
+	// Descomentar si se quiere ver la prueba
+	// document.write(nuevoTexto4);
+	// document.write("<br>" + nuevoTexto5);
+
+
+	// Igualmente hay mas métodos para trabajar con cadenas de texto, es cuestion
+	// de investigar cuales mas métodos hay.
+
+	</script>
+	
+</body>
+</html>

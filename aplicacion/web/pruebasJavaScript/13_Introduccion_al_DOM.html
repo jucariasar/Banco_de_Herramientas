@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Introducción al DOM</title>
+</head>
+<body>
+
+	<h1 id="titulo">Titulo de nuestro sitio web</h1>
+	<p>1.- Lorem ipsum <b>dolor</b> sit amet, consectetur adipisicing elit. Quod, rerum molestias, asperiores libero ratione similique, animi accusantium neque quasi eius, consequatur maxime voluptatibus omnis repellat ipsa porro sint unde dolor.</p>
+
+	<p id="segundo">2.- Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi quos incidunt fuga similique libero facere quas, labore blanditiis totam laudantium. Maxime incidunt quos eaque delectus libero dignissimos, ad doloribus odit.</p>
+
+	<p>3.- Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis illum fugiat, odio fuga quisquam, adipisci magnam architecto tenetur error voluptatum possimus quam, amet accusamus sint temporibus maxime minus molestiae ipsum.</p>
+
+	<script>
+		// :::::::: Obtener elementos del DOM por etiquetas ::::::::
+
+
+		var elementosP = document.getElementsByTagName("p");
+
+		// lo anterior va a guardar en elementosP todas las etiquetas p y su contenido
+		// si queremos acceder a un elemento especifico podemos acceder como cuando
+		// accedemos a un arreglo (elementoP[0]) y si queremos acceder al contenido del
+		// elemento HTML (lo que hay dentro del elemento) lo podemos hacer con la propiedad
+		// innerHTML del elemento, por ejemplo,
+		// elementosP[0].innerHTML
+
+
+		// :::::::: Modificar un elemento HTML :::::::::
+
+		// Descomentar si se quiere ver prueba
+		// elementosP[0].innerHTML = "Hola Mundo";
+
+
+		// :::::::: Obtener elementos del DOM por id :::::::::
+
+		var segundoParrafo = document.getElementById("segundo");
+
+		// Si queremos acceder al contenido del anterior elemento
+		// segundoParrafo.innerHTML
+
+	</script>
+</body>
+</html>

@@ -24,7 +24,7 @@
     </form>
 </c:if>
 <c:if test="${empty rgnl}">
-    <h3>No hay Rhegionales Registradas</h3>
+    <h3>No hay Regionales Registradas</h3>
     <p>Deben Existir Regionales Registradas en la Base de Datos para Poder Asociar Centros</p>
 </c:if>
 

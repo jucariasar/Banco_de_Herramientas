@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Funciones</title>
+</head>
+<body>
+	
+	<script>
+
+		// Ejemplo básico de una función con un parametro y sin
+		// valor de retorno
+
+		// :::::::::: forma uno ::::::::::
+		/* 
+		function saludo(nombre){
+			document.write("Hola, " + nombre);
+		}
+
+		saludo("Camilo"); */
+
+
+
+		// :::::::::: forma dos ::::::::::
+
+		// Una función que recibe dos parametros y NO retorna un valor
+
+		/*
+		function suma(numero1, numero2){
+			var resultado = numero1 + numero2;
+
+			document.write(resultado);
+		}
+
+		suma(10, 20);
+		*/
+
+
+		// :::::::::: forma tres ::::::::::
+
+		// Una función que recibe dos parametros y retorna un valor.
+		/*
+		function suma2(numero1, numero2){
+			var resultado = numero1 + numero2;
+
+			return resultado;
+		}
+
+		var result = suma2(10, 20);
+
+		document.write(result);
+		*/
+
+
+		// :::::::::: otra forma ::::::::::
+
+		// Función anonima que se asigna a una variable.
+		// Una función anonima también es conocida como callbacks
+
+		// En este ejemplo la variable suma, se convertira en una función
+		 /*
+		var suma = function(numero1, numero2){
+			var resultado = numero1 + numero2;
+			return resultado;
+		}
+
+		document.write(suma(40, 50)); */
+
+
+		// :::::::::: Otro ejemplo de funciones ::::::::::
+
+		/*
+		function numeroMaximo(numero1, numero2){
+			if(numero1 > numero2)
+				return numero1;
+			else
+				return numero2;
+		}
+
+		var mayor = numeroMaximo(23, 2);
+
+		document.write(mayor);
+		*/	
+
+		// Una buena practica de programación es no imprimir en pantalla desde una
+		// función, es mas recomendable que retorne un resultado.
+	</script>
+	
+</body>
+</html>

@@ -123,7 +123,7 @@
         </c:if>
 
         <script src="bootstrap/js/jquery.js"></script>
-        <script src="css/pruebaajax.js"></script>
+        <script src="js/pruebaajax.js"></script>
         <script src="bootstrap/js/bootstrap.min.js"></script>
 
     </body>

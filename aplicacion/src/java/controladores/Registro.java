@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelos.Centro;
+import modelos.Programa;
 import modelos.Regional;
 
 @WebServlet(name = "Registro", urlPatterns = {"/Registro"})
@@ -67,7 +68,7 @@ public class Registro extends HttpServlet {
                 try {
                     // Obtine la lista de centros en la BD
                     List<Centro> centros = Centro.consultarCentros();
-                    
+
                     // Establece el atributo "cent" con la lista de centros, dicho atributo se pasará 
                     // con el objeto request, del Servlet al JSP mediante el objeto view con el método
                     // forward(request, response), que previamente obtuvo el jsp que se invocara mediante
@@ -85,6 +86,33 @@ public class Registro extends HttpServlet {
                 view = request.getRequestDispatcher("formularios/registro_usuario.jsp");
 
                 break;
+            case 5: // Registrar elemento
+                break;
+
+            case 6: // Registrar programa
+
+                view = request.getRequestDispatcher("formularios/registro_programa.jsp");
+
+                break;
+                
+            case 7: // Registrar Ficha
+                
+                try {
+                    // Obtine la lista de regionales registradas en la BD
+                    List<Programa> programas = Programa.consultarProgramas();
+
+                    // pasa la lista de regionales al JSP que se invoca con el objeto RequestDispacher
+                    request.setAttribute("prma", programas);
+                    // Invoca de modo directo al recurso Web registro_centro.jsp
+                    view = request.getRequestDispatcher("formularios/registro_ficha.jsp");
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                } catch (ClassNotFoundException ex) {
+                    ex.printStackTrace();
+                }
+                
+                break;
+
             default:
                 view = request.getRequestDispatcher("formularios/registros.jsp");
         }
@@ -104,39 +132,37 @@ public class Registro extends HttpServlet {
 
         // Si el valor de "opcion" es "Insertar Regional" procede a insertar los dados de la regional
         if (opcion.equals("Insertar Regional")) {
-            
-            // Obtiene el parametro "codigo" del JSP
+
+            // Obtiene el valor del atributo name="codigo" del JSP desde el que se invoco el método POST
             int codigo = Integer.parseInt(request.getParameter("codigo"));
 
-            // Obtiene el parametro "nombre" del JSP
+            // Obtiene el valor del atributo name="codigo" del JSP desde el que se invoco el método POST
             String nombre = request.getParameter("nombre");
-            Connection conexion = null;
-            int resultado = 0; // Para guardar la cantidad de filas que se modificaron en la inserccion 
-            
-            PreparedStatement instruccion = null; // Maneja la instruccion  de inserccion de SQL
-            
-            try {
-                
-                // Carga el controlador de la base de datos
-                Class.forName(ConexionBD.CONTROLADOR);
-                
-                // Para manejar la conexion a la base de datos
-                conexion = ConexionBD.ConectarRegistro();
-                
-                // Maneja una instrucción de inserccion en la base de datos
-                instruccion = conexion.prepareStatement("INSERT INTO regional "
-                        + "VALUES(?, ?)");
-                        
-                instruccion.setInt(1, codigo); // Inserta dato de tipo int en el primer ? de instruccion
-                instruccion.setString(2, nombre); // Inserta dato de tipo String en el segundo ? de instruccion
-                resultado = instruccion.executeUpdate(); // Ejecuta la instrucción y devuelve cuantas filas fueron
-                // modificacdas con la instrucción
 
+            // String con instrucción para ejecutar posteriormente.
+            String instruccion = "INSERT INTO regional VALUES(?, ?)";
+
+            // Para guardar la cantidad de filas que se modificaron en la inserccion
+            int resultado = 0;
+
+            // Crea objeto ConexionBD para iniciar la inserción de los datos.
+            ConexionBD conectar = new ConexionBD();
+
+            try {
+                // Establece la instrucción que se debe de ejecutar y realiza la conexión con la BD
+                conectar.ConectarRegistro(instruccion);
+
+                // Establece el dato que se debe de insertar en el primer ? en la instrucción.
+                conectar.getInstruccionInsercion().setInt(1, codigo);
+
+                // Establece el dato que se debe de insertar en el segundo ? en la instrucción.
+                conectar.getInstruccionInsercion().setString(2, nombre);
+
+                // Ejecuta la instrucción y se devuelve el número de filas que se se modificaron con la instrucción.
+                resultado = conectar.getInstruccionInsercion().executeUpdate();
             } catch (SQLException ex) {
-                // Lanza excepcion SQLException si la insercción no es exitosa.
                 ex.printStackTrace();
             } catch (ClassNotFoundException ex) {
-                // Lanza excepcion ClassNotFoundException si el controlador no se carga correctamente
                 ex.printStackTrace();
             } finally {
 
@@ -146,23 +172,15 @@ public class Registro extends HttpServlet {
                 // Renvia la solicitud o petición del Servlet al JSP (Para que se desplegue la vista registro_regional.jsp)
                 view.forward(request, response);
 
-                try {
-                    //Cierra la instrucción
-                    instruccion.close();
-
-                    // Cierra la conexion con la BD
-                    conexion.close();
+                try {          
+                    conectar.cerrarConexiones();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
 
             }
-
             // Si el valor de "opcion" es "Insertar Centro" procede a insertar los dados del centro
         } else if (opcion.equals("Insertar Centro")) {
-
-            // ArrayList de Regional para almacenar las regionales registradas
-            List<Regional> regionales = new ArrayList<>();
 
             // Obtiene el parametro "nombre" del JSP que invoco el método POST de este Servlet (registro_centro.jsp)
             String nombre = request.getParameter("nombre");
@@ -172,61 +190,35 @@ public class Registro extends HttpServlet {
 
             // Obtiene el parametro "codigo_regional" del JSP que invoco el método POST de este Servlet (registro_centro.jsp)
             int codigoR = Integer.parseInt(request.getParameter("codigo_regional"));
+            
+            // String con instrucción para ejecutar posteriormente.
+            String instruccion = "INSERT INTO centro VALUES(?, ?, ?)";
+            
+            // Para guardar la cantidad de filas que se modificaron en la inserccion
+            int resultado = 0;
 
-            int resultado = 0; // Para guardar cuantas filas fueron modificadas
-            Connection conexion = null; // Para manejar la conexión con la BD
-            PreparedStatement instruccion = null; // Instruccion para manejar insreciones
-            Statement instruccionQuery = null; // Instrucción para manejar consultas
-            ResultSet conjuntoResultados = null; // Objeto para guardar el resultado de una consulta
+            // Crea objeto ConexionBD para iniciar la inserción de los datos.
+            ConexionBD conectar = new ConexionBD();
 
             try {
-                // Carga el controlador de la base de datos
-                Class.forName(ConexionBD.CONTROLADOR);
+                // ArrayList de Regional para almacenar las regionales registradas
+                List<Regional> regionales = Regional.consultarRegionales();
+                
+                // Establece la instrucción que se debe de ejecutar y realiza la conexión con la BD
+                conectar.ConectarRegistro(instruccion);
 
-                // Realiza la conexion a la BD envianto la URL, el nombre de usuario y el password
-                conexion
-                        = DriverManager.getConnection(ConexionBD.URL_BASEDATOS,
-                                ConexionBD.NOMBREUSUARIO, ConexionBD.PASSWORD);
+                // Establece el dato que se debe de insertar en el primer ? en la instrucción.
+                conectar.getInstruccionInsercion().setInt(1, codigo);
 
-                // Instruccion para insertar valores en la base de datos
-                instruccion = conexion.prepareStatement("INSERT INTO centro "
-                        + "VALUES(?, ?, ?)"); //
+                // Establece el dato que se debe de insertar en el segundo ? en la instrucción.
+                conectar.getInstruccionInsercion().setString(2, nombre);
+                
+                // Establece el dato que se debe de insertar en el tercer ? en la instrucción.
+                conectar.getInstruccionInsercion().setInt(3, codigoR);
 
-                instruccion.setInt(1, codigo); // Establece dato entero del objeto prepareStatement en el primer ?
-                instruccion.setString(2, nombre); // Establece dato String del objeto prepareStatement en el segundo ?
-                instruccion.setInt(3, codigoR); // Establece dato entero del objeto prepareStatement en el tercer ?
-                resultado = instruccion.executeUpdate(); // Ejecuta la instrucción de insersion guardada previamente
-
-                // Crea objeto Statement para consultar la base de datos
-                instruccionQuery = conexion.createStatement();
-
-                // Consulta la base de datos y almacena la consulta en conjuntoResultados
-                conjuntoResultados = instruccionQuery.executeQuery("SELECT * FROM regional");
-
-                // Obtiene el esquema de la base de datos (nombres de columnas)
-                ResultSetMetaData metaDatos = conjuntoResultados.getMetaData();
-
-                // Obtiene el numero de columnas del esquema.
-                int numeroDeColumnas = metaDatos.getColumnCount();
-
-                // recorre la consulta por filas
-                while (conjuntoResultados.next()) {
-
-                    // Objeto Regional temporal para almacenar los datos de cada fila en la consulta
-                    Regional rtemp = new Regional();
-
-                    // Recorre cada campo de la fila
-                    for (int i = 1; i <= numeroDeColumnas; i++) {
-
-                        // Si es la primera columna de la consulta (columna código)
-                        if (i == 1) { // optiene los datos de la primera columna en cada recorrido de filas
-                            rtemp.setCodigo((int) conjuntoResultados.getObject(i)); // Establece el código en un objeto Regional
-                        } else { // optiene los datos de la segunda columna columna en cada recorrido de filas
-                            rtemp.setNombre_departamento((String) conjuntoResultados.getObject(i)); // Establece el nombre en un objeto Regional
-                        }
-                    }
-                    regionales.add(rtemp); // Guarda el objeto creado en una lista de objetos Regional
-                }
+                // Ejecuta la instrucción y se devuelve el número de filas que se se modificaron con la instrucción.
+                resultado = conectar.getInstruccionInsercion().executeUpdate();
+                
                 request.setAttribute("rgnl", regionales); // pasa la lista regionales al JSP que realizo la solicitud
 
             } catch (SQLException ex) {
@@ -238,8 +230,7 @@ public class Registro extends HttpServlet {
                 RequestDispatcher view = request.getRequestDispatcher("formularios/registro_centro.jsp");
                 view.forward(request, response);
                 try {
-                    instruccion.close();
-                    conexion.close();
+                    conectar.cerrarConexiones();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -247,74 +238,158 @@ public class Registro extends HttpServlet {
             }
         } else if (opcion.equals("Insertar Area")) {
 
-            List<Centro> centros = new ArrayList<>();
 
             String nombre = request.getParameter("nombre");
             int codigoC = Integer.parseInt(request.getParameter("codigo_centro"));
+            
+            // String con instrucción para ejecutar posteriormente.
+            String instruccion = "INSERT INTO area VALUES(?, ?)";
+            
+            // Para guardar la cantidad de filas que se modificaron en la inserccion
+            int resultado = 0;
 
-            int resultado = 0; // Para guardar cuantas filas fueron modificadas
-            Connection conexion = null; // Para manejar la conexión con la BD
-            PreparedStatement instruccion = null; // Instruccion para manejar insersiones
-            Statement instruccionQuery = null; // Instrucción para manejar consultas
-            ResultSet conjuntoResultados = null; // Objeto para guardar el resultado de una consulta
+            // Crea objeto ConexionBD para iniciar la inserción de los datos.
+            ConexionBD conectar = new ConexionBD();
 
             try {
-                Class.forName(ConexionBD.CONTROLADOR);
+                // ArrayList de Regional para almacenar las regionales registradas
+                List<Centro> centros = Centro.consultarCentros();
+                
+                // Establece la instrucción que se debe de ejecutar y realiza la conexión con la BD
+                conectar.ConectarRegistro(instruccion);
 
-                conexion
-                        = DriverManager.getConnection(ConexionBD.URL_BASEDATOS,
-                                ConexionBD.NOMBREUSUARIO, ConexionBD.PASSWORD);
+                // Establece el dato que se debe de insertar en el primer ? en la instrucción.
+                conectar.getInstruccionInsercion().setString(1, nombre);
 
-                instruccion = conexion.prepareStatement("INSERT INTO area "
-                        + "VALUES(?, ?)"); //
-
-                // instruccion.setInt(1, codigo); // Establece dato entero del objeto prepareStatement en el primer ? en la linea 168
-                instruccion.setString(1, nombre); // Establece dato String del objeto prepareStatement en el segundo ? en la linea 168
-                instruccion.setInt(2, codigoC); // Establece dato entero del objeto prepareStatement en el tercer ? en la linea 168
-                resultado = instruccion.executeUpdate(); // Ejecuta la instrucción de insersion guardada previamente
-
-                // Crea objeto Statement para consultar la base de datos
-                instruccionQuery = conexion.createStatement();
-
-                // Consulta la base de datos
-                conjuntoResultados = instruccionQuery.executeQuery("SELECT * FROM centro");
-
-                // Procesa los resultados de la consulta
-                ResultSetMetaData metaDatos = conjuntoResultados.getMetaData();
-                int numeroDeColumnas = metaDatos.getColumnCount();
-
-                while (conjuntoResultados.next()) {
-                    Centro ctemp = new Centro();
-                    for (int i = 1; i <= numeroDeColumnas; i++) {
-                        if (i == 1) { // optiene los datos de la primera columna en cada recorrido de filas
-                            ctemp.setCodigo((int) conjuntoResultados.getObject(i)); // Establece el código en un objeto Regional
-                        } else if (i == 2) { // optiene los datos de la segunda columna columna en cada recorrido de filas
-                            ctemp.setNombre((String) conjuntoResultados.getObject(i)); // Establece el nombre en un objeto Regional
-                        } else {
-                            ctemp.setCodigo_regional((int) conjuntoResultados.getObject(i));
-                        }
-                    }
-                    centros.add(ctemp); // Guarda el objeto creado en una lista de objetos Centro
-                }
-                request.setAttribute("cent", centros); // pasa la lista regionales a un JSP como rgnl
+                // Establece el dato que se debe de insertar en el segundo ? en la instrucción.
+                conectar.getInstruccionInsercion().setInt(2, codigoC);
+               
+                // Ejecuta la instrucción y se devuelve el número de filas que se se modificaron con la instrucción.
+                resultado = conectar.getInstruccionInsercion().executeUpdate();
+                
+                request.setAttribute("cent", centros); // pasa la lista regionales al JSP que realizo la solicitud
 
             } catch (SQLException ex) {
                 ex.printStackTrace();
             } catch (ClassNotFoundException ex) {
                 ex.printStackTrace();
             } finally {
-
+                // Invoca al recurso Web registro_centro.jsp
                 RequestDispatcher view = request.getRequestDispatcher("formularios/registro_area.jsp");
                 view.forward(request, response);
                 try {
-                    instruccion.close();
-                    conexion.close();
+                    conectar.cerrarConexiones();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+        } else if (opcion.equals("Insertar Programa")) {
+
+            // Obtiene valor atributo name="codigo" del JSP desde el que se invoco el método POST
+            int codigo = Integer.parseInt(request.getParameter("codigo"));
+
+            // Obtiene valor del atributo name="version" del JSP desde el que se invoco el método POST
+            int version = Integer.parseInt(request.getParameter("version"));
+
+            // Obtiene valor del atributo name="nombre" del JSP desde el que se invoco el método POST
+            String programa = request.getParameter("nombre");
+
+            // String con instrucción para ejecutar posteriormente.
+            String instruccion = "INSERT INTO programa VALUES(?, ?, ?)";
+            
+            // Para guardar la cantidad de filas que se modificaron en la inserccion
+            int resultado = 0;
+
+            // Crea objeto ConexionBD para iniciar la inserción de los datos.
+            ConexionBD conectar = new ConexionBD();
+            
+            try {
+                // Establece la instrucción que se debe de ejecutar y realiza la conexión con la BD
+                conectar.ConectarRegistro(instruccion);
+
+                // Establece el dato que se debe de insertar en el primer ? en la instrucción.
+                conectar.getInstruccionInsercion().setInt(1, codigo);
+
+                // Establece el dato que se debe de insertar en el segundo ? en la instrucción.
+                conectar.getInstruccionInsercion().setInt(2, version);
+                
+                // Establece el dato que se debe de insertar en el tercer ? en la instrucción.
+                conectar.getInstruccionInsercion().setString(3, programa);
+
+                // Ejecuta la instrucción y se devuelve el número de filas que se se modificaron con la instrucción.
+                resultado = conectar.getInstruccionInsercion().executeUpdate();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            } catch (ClassNotFoundException ex) {
+                ex.printStackTrace();
+            } finally {
+
+                // Objeto para invocar recurso Web desde
+                RequestDispatcher view = request.getRequestDispatcher("formularios/registro_programa.jsp");
+
+                // Renvia la solicitud o petición del Servlet al JSP (Para que se desplegue la vista registro_regional.jsp)
+                view.forward(request, response);
+
+                try {          
+                    conectar.cerrarConexiones();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        } else if(opcion.equals("Insertar Ficha")){
+            
+            int numeroFicha = Integer.parseInt(request.getParameter("numero"));
+            
+            int codPrograma = Integer.parseInt(request.getParameter("codigo_programa"));
+            
+            // String con instrucción para ejecutar posteriormente.
+            String instruccion = "INSERT INTO ficha VALUES(?, ?, ?)";
+            
+            // Para guardar la cantidad de filas que se modificaron en la inserccion
+            int resultado = 0;
+
+            // Crea objeto ConexionBD para iniciar la inserción de los datos.
+            ConexionBD conectar = new ConexionBD();
+            
+            /*
+            try {
+                // ArrayList de Regional para almacenar las regionales registradas
+                List<Regional> regionales = Regional.consultarRegionales();
+                
+                // Establece la instrucción que se debe de ejecutar y realiza la conexión con la BD
+                conectar.ConectarRegistro(instruccion);
+
+                // Establece el dato que se debe de insertar en el primer ? en la instrucción.
+                conectar.getInstruccionInsercion().setInt(1, codigo);
+
+                // Establece el dato que se debe de insertar en el segundo ? en la instrucción.
+                conectar.getInstruccionInsercion().setString(2, nombre);
+                
+                // Establece el dato que se debe de insertar en el tercer ? en la instrucción.
+                conectar.getInstruccionInsercion().setInt(3, codigoR);
+
+                // Ejecuta la instrucción y se devuelve el número de filas que se se modificaron con la instrucción.
+                resultado = conectar.getInstruccionInsercion().executeUpdate();
+                
+                request.setAttribute("rgnl", regionales); // pasa la lista regionales al JSP que realizo la solicitud
+
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            } catch (ClassNotFoundException ex) {
+                ex.printStackTrace();
+            } finally {
+                // Invoca al recurso Web registro_centro.jsp
+                RequestDispatcher view = request.getRequestDispatcher("formularios/registro_centro.jsp");
+                view.forward(request, response);
+                try {
+                    conectar.cerrarConexiones();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
 
-            }
-
+            }*/
+        
         }
     }
 }

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Ejercicio con Funciones y Formularios</title>
+</head>
+<body>
+
+	<!-- Se recomienda utilizar las clases para diseñar, como también se
+	recomienda NO utilizar los id para diseñar sino que mas bien utilizarlos
+	para aplicaciones con JavaScript -->
+
+	<form action="">
+		<input type="text" id="numero1">
+		<input type="text" id="numero2">
+		<input type="button" value="Sumar" onclick="alert(suma());">
+	</form>
+
+	<script>
+
+		// Tener cuidado con el atributo value cuando se obtiene el elemento
+		// En este caso es un atributo del objeto NO un método del objeto.
+
+		var suma = function(){
+			var num1 = parseFloat(document.getElementById("numero1").value);
+			var num2 = parseFloat(document.getElementById("numero2").value);
+			
+			// Como hay parseFloat() también hay parseInt()
+
+			var resultado = num1 + num2;
+			return resultado;
+		}		
+	</script>
+	
+</body>
+</html>

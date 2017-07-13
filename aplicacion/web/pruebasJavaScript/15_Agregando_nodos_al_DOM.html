@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document Object Model</title>
+</head>
+<body>
+	<ol id="lista">
+		<li>Lorem ipsum dolor sit amet.</li>
+		<li>Asperoides ad, quam unde. Fuga</li>
+	</ol>
+
+	<script>
+		var elemento = document.createElement("li"),
+		    contenido = document.createTextNode("Nuevo texto");
+
+		elemento.appendChild(contenido);
+
+		// ::::::::: Agregar un elemento al final de otro :::::::::
+
+		// Necesitamos seleccionar el elmento padre y despues agregarle
+		// el elemento hijo
+
+		var padre = document.getElementById("lista");
+
+		padre.appendChild(elemento);
+
+
+		// ::::::::: Otra forma de hacer lo anterior :::::::::
+
+		// Descomentar si se quiere ver prueba
+		// var padre2 = document.getElementsByTagName("li")[0].parentNode;
+		// padre2.appendChild(elemento);
+
+
+		// ::::::::: Agregar un elemento antes de otro especificado de otro :::::::::
+
+		var padre3 = document.getElementsByTagName("li")[0].parentNode,
+			elementoReferencia = document.getElementsByTagName("li")[1];
+		padre3.insertBefore(elemento, elementoReferencia);
+
+		// El método insertBefore() recibe dos parametros, 1 el elemento, y 2 el nodo
+		// de referencia
+
+
+	</script>
+	
+</body>
+</html>

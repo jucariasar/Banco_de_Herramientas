@@ -3,6 +3,7 @@ package conexionBD;
 import com.sun.rowset.JdbcRowSetImpl;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.sql.rowset.JdbcRowSet;
 
@@ -13,7 +14,28 @@ public class ConexionBD {
     public static final String NOMBREUSUARIO = "root";
     public static final String PASSWORD = "5824247";
     public static final String NOMBREBD = "banco_herramientas";
+    
+    private PreparedStatement instruccionInsercion;
+    private Connection conexion;
 
+    public PreparedStatement getInstruccionInsercion() {
+        return instruccionInsercion;
+    }
+
+    public void setInstruccionInsercion(PreparedStatement instruccionInsercion) {
+        this.instruccionInsercion = instruccionInsercion;
+    }
+
+    public Connection getConexion() {
+        return conexion;
+    }
+
+    public void setConexion(Connection conexion) {
+        this.conexion = conexion;
+    }
+    
+    
+    
     public static JdbcRowSet conectarConsulta(String consulta)
             throws ClassNotFoundException, SQLException {
 
@@ -28,14 +50,20 @@ public class ConexionBD {
         
         return rowSet;
     }
-    
-    public static Connection ConectarRegistro() 
-            throws SQLException{
        
-        // Conexion a la base de datos mediante los respectivos parametros
-        // de direccion, usuario y contraseña
-        Connection conexion = DriverManager.getConnection(URL_BASEDATOS, NOMBREUSUARIO, PASSWORD);
-                
-        return conexion;
+    public void ConectarRegistro(String instruccion) throws ClassNotFoundException, SQLException{
+        
+        Class.forName(ConexionBD.CONTROLADOR);
+        
+        this.conexion = DriverManager.getConnection(URL_BASEDATOS, NOMBREUSUARIO, PASSWORD);
+        
+        instruccionInsercion = conexion.prepareStatement(instruccion);
+        
+    };
+    
+    public void cerrarConexiones() throws SQLException{
+        this.getInstruccionInsercion().close();
+        this.getConexion().close();
     }
+
 }

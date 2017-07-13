@@ -13,7 +13,7 @@
 
 
     <script src="bootstrap/js/jquery.js"></script>
-    <script src="css/header.js"></script>
+    <script src="js/header.js"></script>
     <script src="bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>
