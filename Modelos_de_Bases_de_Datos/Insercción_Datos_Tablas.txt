@@ -59,10 +59,10 @@ INSERT INTO area VALUES
 
 
 INSERT INTO usuario VALUES
-(98553377, "Héctor Alonso", "López Valencia", 3146416371, 3136158545, "helopez@sena.edu.co", "98553377", "Automatización", 9204, "EMPLEADO");
+(98553377, "Héctor Alonso", "López Valencia", 3146416371, 3136158545, "helopez@sena.edu.co", SHA("98553377"), "Automatización", 9204, "EMPLEADO");
 
 INSERT INTO usuario VALUES
-(1128387562, "Juan Camilo", "Arias Arias", 3017339021, "5824247", "miloarias@gmail.com", "1128387562","Automatización", 9204, "EMPLEADO");
+(1128387562, "Juan Camilo", "Arias Arias", 3017339021, "5824247", "miloarias@gmail.com", SHA("1128387562"),"Automatización", 9204, "EMPLEADO");
 
 INSERT INTO persona VALUES
 (70550772, "Efren Eliecer", "Calle Montoya", 3004164637, NULL, "ecallenator@gmail.com", "Automatización", 9204, "EMPLEADO");

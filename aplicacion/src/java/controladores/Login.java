@@ -43,15 +43,13 @@ public class Login extends HttpServlet {
         String correo = request.getParameter("correo"); // Obtiene el parametro "correo" de la vista Login.jsp
         String password = request.getParameter("passwd"); // Obtiene el parametro "passwd" de la vista Login.jsp
 
-        //Almacena un String para posteriormente realizar una consulta a la base de datos con el correo.
-        String consulta = "SELECT passwd FROM usuario WHERE email=\"" + correo + "\"";
-
+        // Almacena un String para posteriormente realizar una consulta en
+        // la base de datos con el correo y la contraseña.
+        String consulta="SELECT email, passwd FROM usuario WHERE email=\""
+                + "" + correo + "\" AND passwd=SHA(\"" + password+ "\")";
+        
         // Variable de referencia para invocar posteriormente a un recurso Web
         RequestDispatcher view = null;
-        
-        
-        
-        
         
         try {
             // Se invoca al método statico conectarConsulta el cual se encarga de realizar
@@ -59,20 +57,23 @@ public class Login extends HttpServlet {
             // Y devuelve los resultados de la consulta.
             JdbcRowSet rowSet = ConexionBD.conectarConsulta(consulta);
 
-            // Recorre las filas de la consulta
-            while (rowSet.next()) {
-
-                // Si el password ingresado por el usuario al cual pertenece el correo
-                // es igual al password en la base de datos
-                if (password.equals(rowSet.getObject(1))) {
+                // Si la consulta realizada tiene alguna coincidencia con los datos
+                // registrados en la base de datos se le da acceso al usuario.
+                if (rowSet.next()) {
+                    HttpSession session = request.getSession();
+                    
+                    // Guarda los datos en session por si son requeridos despues
+                    // no tener que consularlos en la base de datos
+                    session.setAttribute("usuario", correo);
+                    session.setAttribute("passwd", password);
+                    
                     // Invoca de modo directo al recurso Web registros.jsp
                     view = request.getRequestDispatcher("formularios/registros.jsp");
                 } else { // De lo contrario
                     // Invoca al recurso web login.jsp
                     view = request.getRequestDispatcher("login.jsp");
                 }
-            }
-
+            
         } catch (SQLException ex) {
             // Si la consulta no es correcta lanza un SQLException
             // Invoca de modo directo al recurso login.jsp

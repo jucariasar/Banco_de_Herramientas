@@ -2,6 +2,15 @@
 Intrucciones en myql
 */
 
+/*Eliminar una base de datos completa*/
+DROP DATABASE nombre_base_datos;
+
+/*Con la sintaxis superior no tendríamos ningún problema en eliminarla siempre y cuando exista. 
+Para asegurarnos que la BBDD se elimine y que en caso de que no exista no salgan mensajes 
+de error podemos usar la sentencia ‘IF EXIST‘:*/
+
+DROP DATABASE IF EXISTS nombre_base_datos;
+
 
 SELECT * FROM tabla;        /*Consulta: Mostrar TODOS los datos en la tabla*/
 
